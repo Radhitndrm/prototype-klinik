@@ -1,0 +1,200 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(to right, #f1f5ff, #e3e4ff);
+    color: #2b2b2b;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Navbar */
+.navbar {
+    background: #ffffffcc;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #8b5cf6;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 70px 20px;
+    background: linear-gradient(135deg, #bfe9ff, #e2ccff);
+    border-radius: 20px;
+    margin-bottom: 50px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.hero-img {
+    max-width: 160px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.hero h1 {
+    font-size: 2.7rem;
+    margin-bottom: 10px;
+}
+
+.highlight {
+    color: #9333ea;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #575757;
+}
+
+/* Card Sections */
+.card {
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 40px 30px;
+    margin-bottom: 50px;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 1s ease-in;
+}
+
+.card h2 {
+    margin-bottom: 25px;
+    color: #2b2b2b;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+button {
+    padding: 12px 22px;
+    background: linear-gradient(to right, #6366f1, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(139, 92, 246, 0.25);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s;
+}
+
+button:hover {
+    background: linear-gradient(to right, #4f46e5, #7c3aed);
+    transform: translateY(-2px);
+}
+
+/* Project Cards */
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    padding-bottom: 15px;
+}
+
+.project-card {
+    background-color: #f7f7fe;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease;
+    padding-bottom: 15px;
+}
+
+.project-card:hover {
+    transform: translateY(-6px);
+}
+
+.project-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.project-card h3 {
+    padding: 15px 15px 5px;
+    font-size: 1.2rem;
+    color: #2e2e2e;
+}
+
+.project-card p {
+    padding: 0 15px 15px;
+    color: #555;
+}
+
+.project-button {
+    margin-left: 15px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-size: 0.9rem;
+    border-top: 1px solid #ddd;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .project-card img {
+        height: 160px;
+    }
+   
+}
+.button-to-main {
+    margin-top: 15px;
+}

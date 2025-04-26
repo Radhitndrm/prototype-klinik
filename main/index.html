@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klinik | Web & Jaringan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="css-logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">
+                Klinik Prodi
+            </div>
+            <div class="toggle" onclick="toggleNavbar()">&#9776;</div>
+            <ul class="nav-links">
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#tentang">Tentang</a></li>
+                <li><a href="#divisi">Divisi</a></li>
+                <li><a href="#kontak">Kontak</a></li>
+            </ul>
+        </nav>
+
+        <!-- Hero Section -->
+        <header id="home" class="hero">
+            <img src="hero-logo.png" alt="Logo Klinik" class="hero-img">
+            <h1>Selamat Datang di <span class="highlight">Klinik Prodi</span></h1>
+            <p>Komunitas belajar interaktif untuk semua mahasiswa Klinik</p>
+            <div class="button-group">
+                <a href="../Full-Stack/index.html"><button>Masuk Divisi Fullstack</button></a>
+                <a href="../Jaringan/index.html"><button>Masuk Divisi Jaringan</button></a>
+                <a href="../Kewirahusaan/index.html"><button>Masuk Divisi Kewirausahaan</button></a>
+                <a href="../Pengabdian/index.html"><button>Masuk Divisi Pengabdian Masyarakat</button></a>
+                <a href="../K3L/index.html"><button>Masuk Divisi Kesehatan, Keselamatan, dan
+                        Lingkungan</button></a>
+                <a href="../Kreativitas/index.html"><button>Masuk Divisi Kreativitas</button></a>
+            </div>
+        </header>
+
+        <section id="visi-misi" class="card fade-in visi-misi-section">
+            <h2>🎯 Visi & Misi Klinik</h2>
+            <div class="visi-misi-grid">
+                <div class="visi">
+                    <h3>Visi</h3>
+                    <p>
+                        Pada tahun 2037, menjadi pusat pengembangan dan kolaborasi sains dan teknologi lintas prodi yang
+                        unggul, inovatif, dan islami, berfokus pada penyelesaian permasalahan sosial-lingkungan berbasis
+                        teknologi informasi, serta memperkuat jejaring dan kontribusi nyata bagi masyarakat.
+                    </p>
+                </div>
+                <div class="misi">
+                    <h3>Misi</h3>
+                    <ol>
+                        <li> Menyelenggarakan layanan pendidikan, konsultasi, dan pengembangan keilmuan lintas prodi
+                            secara islami dan berbasis teknologi informasi untuk mendukung peningkatan kompetensi
+                            mahasiswa di bidang sains dan teknologi.</li>
+                        <li>Mengembangkan riset kolaboratif dan inovasi terapan yang berorientasi pada solusi
+                            permasalahan sosial-lingkungan dan mendukung pembangunan berkelanjutan di tingkat lokal,
+                            nasional, dan internasional.</li>
+                        <li>Mengintegrasikan keahlian dari Teknik Informatika, Teknik Mesin, Teknik Geologi, dan Teknik
+                            Sipil dalam program pengabdian masyarakat serta pemberdayaan berbasis teknologi tepat guna
+                            dan kearifan lokal.</li>
+                        <li> Membangun jejaring strategis dengan institusi, industri, asosiasi profesi, dan komunitas,
+                            baik di dalam maupun luar negeri, untuk memperkuat daya saing, pertukaran pengetahuan, dan
+                            pengembangan karir mahasiswa.</li>
+                        <li>Menanamkan nilai-nilai keislaman, profesionalisme, dan kewirausahaan dalam setiap aktivitas
+                            klinik prodi guna menghasilkan lulusan yang berkarakter, inovatif, dan adaptif terhadap
+                            tantangan zaman.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Divisi Section -->
+        <section id="divisi" class="card fade-in">
+            <h2>💡 Divisi Utama</h2>
+            <div class="projects">
+                <div class="project-card">
+                    <img src="images/fullstack-developer.png" alt="Fullstack Web">
+                    <h3>Fullstack Web</h3>
+                    <p>Pelajari HTML, CSS, JavaScript, hingga Backend dan Deployment.</p>
+                    <a href="../Full-Stack/index.html"><button class="project-button">Pelajari Selengkapnya</button></a>
+                </div>
+                <div class="project-card">
+                    <img src="images/jaringan.jpeg" alt="Jaringan Komputer">
+                    <h3>Jaringan Komputer</h3>
+                    <p>Materi dari dasar jaringan, topologi, IP, hingga simulasi dengan Cisco Packet Tracer.</p>
+                    <a href="../Jaringan/index.html"><button class="project-button">Pelajari Selengkapnya</button></a>
+                </div>
+                <div class="project-card">
+                    <img src="images/wirausaha.jpg" alt="Jaringan Komputer">
+                    <h3>Divisi Kewirausahaan & Inkubasi </h3>
+                    <p>Pelatihan bisnis teknologi, inkubasi startup mahasiswa, bazar produk inovasi, mentoring bisnis.
+                    </p>
+                    <a href="../Jaringan/index.html"><button class="project-button">Pelajari Selengkapnya</button></a>
+                </div>
+                <div class="project-card">
+                    <img src="images/pengabdian-masyarakat.jpg" alt="Jaringan Komputer">
+                    <h3>Divisi Pengabdian Masyarakat</h3>
+                    <p> Proyek pengabdian lintas prodi, edukasi STEM ke sekolah, pelatihan teknologi untuk masyarakat.
+                    </p>
+                    <a href="../Jaringan/index.html"><button class="project-button">Pelajari Selengkapnya</button></a>
+                </div>
+                <div class="project-card">
+                    <img src="images/kesehatan.jpeg" alt="Jaringan Komputer">
+                    <h3>Divisi Kesehatan, Keselamatan, dan Lingkungan (K3L)</h3>
+                    <p>Workshop K3, pelatihan mitigasi bencana, audit keselamatan laboratorium, kampanye lingkungan.
+                    </p>
+                    <a href="../Jaringan/index.html"><button class="project-button">Pelajari Selengkapnya</button></a>
+                </div>
+                <div class="project-card">
+                    <img src="images/kreatif.jpg" alt="Jaringan Komputer">
+                    <h3> Divisi Kreativitas & Minat Bakat</h3>
+                    <p> Lomba desain, kompetisi robotika, hackathon, festival seni dan olahraga, pengembangan komunitas
+                        minat khusus.
+                    </p>
+                    <a href="../Jaringan/index.html"><button class="project-button">Pelajari Selengkapnya</button></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="tentang" class="card fade-in tentang-section">
+            <div class="tentang-content">
+                <img src="images/desc.jpg" alt="Tentang Klinik" class="tentang-img-dominan">
+                <div class="tentang-text">
+                    <h2>🔍 Tentang Klinik</h2>
+                    <p>
+                        Klinik adalah komunitas edukasi teknologi yang membantu pemula belajar dari dasar.
+                        Dengan pendekatan praktis, visual, dan komunitas aktif, kami siap bantu kamu berkembang.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Kontak -->
+        <section id="kontak" class="card fade-in kontak-section">
+            <h2>📬 Hubungi Kami</h2>
+            <p class="kontak-subtitle">Punya pertanyaan, ide kolaborasi, atau sekadar menyapa? Kirim pesan ke kami!</p>
+            <div class="kontak-grid">
+                <!-- Form di kiri -->
+                <form action="https://formspree.io/f/moqggyle" method="POST" class="kontak-form">
+                    <div class="form-group">
+                        <label for="nama">👤 Nama</label>
+                        <input type="text" id="nama" name="nama" placeholder="Nama kamu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">📧 Email</label>
+                        <input type="email" id="email" name="email" placeholder="email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pesan">💬 Pesan</label>
+                        <textarea id="pesan" name="pesan" rows="5" placeholder="Tulis pesan kamu di sini..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">🚀 Kirim Pesan</button>
+                </form>
+
+                <!-- Gambar dan info kontak di kanan -->
+                <div class="kontak-info">
+                    <h1>Helloo</h2>
+                        <img src="images/kontak.avif" alt="Ilustrasi Kontak" class="kontak-img">
+                        <h3>📨 Info Kontak</h3>
+                        <p><strong>Email:</strong> klinikwebdev@gmail.com</p>
+                        <p><strong>Instagram:</strong> @klinikwebdev</p>
+                        <p><strong>Link Community:</strong></p>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 Klinik. Berkembang bersama, belajar bersama.</p>
+        </footer>
+    </div>
+</body>
+<script>
+    function toggleNavbar() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('show');
+    }
+
+
+
+
+</script>
+
+</html>
