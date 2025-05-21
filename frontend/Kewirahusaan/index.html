@@ -4,84 +4,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Divisi Kewirausahaan | Klinik</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="css-logo.png">
+    <title>Divisi Kewirausahaan | Klinik - Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif; /* Mengatur font utama halaman */
+        }
+        /* Keyframes untuk animasi fadeIn */
+        @keyframes fadeIn {
+            from {
+                opacity: 0; /* Mulai dari transparan */
+                transform: translateY(20px); /* Mulai sedikit dari bawah */
+            }
+            to {
+                opacity: 1; /* Menjadi sepenuhnya terlihat */
+                transform: translateY(0); /* Kembali ke posisi normal */
+            }
+        }
+        /* Kelas untuk menerapkan animasi fadeIn */
+        .fade-in-effect {
+            animation: fadeIn 1s ease-in;
+        }
+
+        /* Scrollbar kustom untuk estetika (opsional) */
+        ::-webkit-scrollbar {
+            width: 8px; /* Lebar scrollbar */
+            height: 8px; /* Tinggi scrollbar (untuk horizontal) */
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5ff; /* Warna latar belakang track scrollbar */
+            border-radius: 10px; /* Sudut melengkung untuk track */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8b5cf6; /* Warna thumb scrollbar (ungu dari CSS asli) */
+            border-radius: 10px; /* Sudut melengkung untuk thumb */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed; /* Warna thumb saat dihover (ungu lebih gelap dari CSS asli) */
+        }
+    </style>
+    <link rel="icon" href="https://placehold.co/32x32/9333EA/FFFFFF?text=KW&font=sans-serif" type="image/png">
 </head>
 
-<body>
-    <div class="container">
+<body class="leading-relaxed bg-gradient-to-r from-[#f1f5ff] to-[#e3e4ff] text-[#2b2b2b]">
+    <div class="max-w-6xl mx-auto p-5">
 
-        <!-- Navbar -->
-        <nav class="navbar">
-            <ul>
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#materi">Materi Bisnis</a></li>
-                <li><a href="#project">Project</a></li>
-                <li><a href="#kontak">Kontak</a></li>
+        <nav class="flex justify-between items-center p-5 bg-white/80 backdrop-blur-sm rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)] mb-10 sticky top-5 z-50 mx-auto">
+             <img src="/frontend/main/images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-lg max-w-[200px]" />
+            <ul class="hidden md:flex gap-8 list-none">
+                <li><a href="#home" class="text-[#333] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8b5cf6]">Beranda</a></li>
+                <li><a href="#materi" class="text-[#333] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8b5cf6]">Materi Bisnis</a></li>
+                <li><a href="#project" class="text-[#333] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8b5cf6]">Project</a></li>
+                <li><a href="#kontak" class="text-[#333] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8b5cf6]">Kontak</a></li>
             </ul>
+            <div class="md:hidden">
+                <button id="mobile-menu-button-kw" class="text-[#333] focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
         </nav>
+        <div id="mobile-menu-kw" class="hidden md:hidden bg-white/80 backdrop-blur-sm rounded-xl shadow-lg mt-2 py-2 sticky top-[85px] z-40 mx-auto">
+            <a href="#home" class="block px-4 py-2 text-[#333] font-semibold hover:bg-[#e9d5ff] hover:text-[#8b5cf6]">Beranda</a>
+            <a href="#materi" class="block px-4 py-2 text-[#333] font-semibold hover:bg-[#e9d5ff] hover:text-[#8b5cf6]">Materi Bisnis</a>
+            <a href="#project" class="block px-4 py-2 text-[#333] font-semibold hover:bg-[#e9d5ff] hover:text-[#8b5cf6]">Project</a>
+            <a href="#kontak" class="block px-4 py-2 text-[#333] font-semibold hover:bg-[#e9d5ff] hover:text-[#8b5cf6]">Kontak</a>
+        </div>
 
-        <!-- Hero Section -->
-        <header id="home" class="hero">
-            <img src="images/business-hero.jpg" alt="Divisi Kewirausahaan" class="hero-img">
-            <h1>Divisi <span class="highlight">Kewirausahaan</span></h1>
-            <p>Menumbuhkan semangat bisnis dan inovasi sejak dini.</p>
-            <a href="../main/index.html"><button class="button-to-main">Kembali ke halaman utama</button></a>
+
+        <header id="home" class="text-center py-16 px-5 bg-gradient-to-br from-[#bfe9ff] to-[#e2ccff] rounded-2xl mt-12 mb-12 shadow-[0_6px_20px_rgba(0,0,0,0.05)]">
+            <img src="https://placehold.co/160x160/FFFFFF/333?text=Bisnis&font=sans-serif" alt="Divisi Kewirausahaan" class="max-w-[100px] mx-auto mb-5 rounded-full border-4 border-white shadow-[0_6px_16px_rgba(0,0,0,0.1)]">
+            <h1 class="text-3xl md:text-[2.7rem] mb-2.5 font-bold">Divisi <span class="text-[#9333ea]">Kewirausahaan</span></h1>
+            <p class="text-lg md:text-xl text-[#575757] mb-4">Menumbuhkan semangat bisnis dan inovasi sejak dini.</p>
+            <a href="../main/index.html">
+                <button class="mt-[15px] py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                    Kembali ke halaman utama
+                </button>
+            </a>
         </header>
 
-        <!-- Materi Section -->
-        <section id="materi" class="card fade-in">
-            <h2>📈 Materi Kewirausahaan</h2>
-            <div class="button-group">
-                <a href="materi/ide-bisnis.html"><button>Ide & Inovasi Bisnis</button></a>
-                <a href="materi/model-bisnis.html"><button>Model Bisnis</button></a>
-                <a href="materi/pemasaran.html"><button>Pemasaran Digital</button></a>
-                <a href="materi/keuangan.html"><button>Dasar Keuangan</button></a>
-                <a href="materi/branding.html"><button>Branding & Identitas</button></a>
-                <a href="materi/pitching.html"><button>Pitching & Presentasi</button></a>
+        <section id="materi" class="bg-white rounded-[18px] px-[30px] py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">📈 Materi Kewirausahaan</h2>
+            <div class="flex flex-wrap gap-[15px] mt-2.5">
+                <a href="materi/ide-bisnis.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Ide & Inovasi Bisnis</button></a>
+                <a href="materi/model-bisnis.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Model Bisnis</button></a>
+                <a href="materi/pemasaran.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Pemasaran Digital</button></a>
+                <a href="materi/keuangan.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Dasar Keuangan</button></a>
+                <a href="materi/branding.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Branding & Identitas</button></a>
+                <a href="materi/pitching.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Pitching & Presentasi</button></a>
             </div>
         </section>
 
-        <!-- Project Section -->
-        <section id="project" class="card fade-in">
-            <h2>🏆 Prestasi</h2>
-            <div class="projects">
-                <div class="project-card">
-                    <img src="images/project1.jpg" alt="Produk Kreatif">
-                    <h3>Produk Kreatif</h3>
-                    <p>Merancang dan menjual produk buatan sendiri melalui marketplace lokal.</p>
-                    <a href="projects/produk-kreatif.html"><button class="project-button">Lihat
-                            Selengkapnya</button></a>
+        <section id="project" class="bg-white rounded-[18px] px-[30px] py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">🏆 Prestasi</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-4">
+                <div class="bg-[#f7f7fe] rounded-[14px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/AABBCC/333?text=Produk+Kreatif&font=sans-serif" alt="Produk Kreatif" class="w-full h-[160px] md:h-[180px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Produk Kreatif</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Merancang dan menjual produk buatan sendiri melalui marketplace lokal.</p>
+                    <a href="projects/produk-kreatif.html">
+                        <button class="ml-[15px] py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
-                <div class="project-card">
-                    <img src="images/project2.jpg" alt="Bazar Sekolah">
-                    <h3>Bazar Sekolah</h3>
-                    <p>Mengelola booth dan penjualan saat event sekolah untuk belajar langsung praktik bisnis.</p>
-                    <a href="projects/bazar.html"><button class="project-button">Lihat Selengkapnya</button></a>
+
+                <div class="bg-[#f7f7fe] rounded-[14px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/BBDDEE/333?text=Bazar+Sekolah&font=sans-serif" alt="Bazar Sekolah" class="w-full h-[160px] md:h-[180px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Bazar Sekolah</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Mengelola booth dan penjualan saat event sekolah untuk belajar langsung praktik bisnis.</p>
+                    <a href="projects/bazar.html">
+                        <button class="ml-[15px] py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
-                <div class="project-card">
-                    <img src="images/project3.jpg" alt="Kompetisi Pitching">
-                    <h3>Kompetisi Pitching</h3>
-                    <p>Berpartisipasi dalam kompetisi ide bisnis dengan presentasi inovatif dan profesional.</p>
-                    <a href="projects/pitching.html"><button class="project-button">Lihat Selengkapnya</button></a>
+
+                <div class="bg-[#f7f7fe] rounded-[14px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/CCDDEE/333?text=Kompetisi+Pitching&font=sans-serif" alt="Kompetisi Pitching" class="w-full h-[160px] md:h-[180px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Kompetisi Pitching</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Berpartisipasi dalam kompetisi ide bisnis dengan presentasi inovatif dan profesional.</p>
+                    <a href="projects/pitching.html">
+                        <button class="ml-[15px] py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- Kontak Section -->
-        <section id="kontak" class="card fade-in">
-            <h2>📬 Kontak Kami</h2>
-            <p>Email: wirausaha@klinikwebdev.com</p>
-            <p>Instagram: @klinikwirausaha</p>
+        <section id="kontak" class="bg-white rounded-[18px] px-[30px] py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">📬 Kontak Kami</h2>
+            <p class="text-gray-700 mb-2">Email: wirausaha@klinikwebdev.com</p>
+            <p class="text-gray-700">Instagram: @klinikwirausaha</p>
         </section>
 
-        <!-- Footer -->
-        <footer>
+        <footer class="text-center p-5 text-[#888] text-sm border-t border-[#ddd]">
             <p>&copy; 2025 Klinik Webdev - Divisi Kewirausahaan</p>
         </footer>
+    </div> <script>
+        const mobileMenuButtonKw = document.getElementById('mobile-menu-button-kw');
+        const mobileMenuKw = document.getElementById('mobile-menu-kw');
 
-    </div>
+        if (mobileMenuButtonKw && mobileMenuKw) { // Pastikan elemen ada sebelum menambahkan event listener
+            mobileMenuButtonKw.addEventListener('click', () => {
+                mobileMenuKw.classList.toggle('hidden');
+            });
+
+            // Menutup menu mobile jika diklik di luar area menu atau link di dalam menu
+            document.addEventListener('click', function(event) {
+                const isClickInsideMenu = mobileMenuKw.contains(event.target);
+                const isClickOnButton = mobileMenuButtonKw.contains(event.target);
+
+                if (!isClickInsideMenu && !isClickOnButton && !mobileMenuKw.classList.contains('hidden')) {
+                    mobileMenuKw.classList.add('hidden');
+                }
+            });
+            // Menutup menu mobile jika link di dalam menu diklik (untuk navigasi halaman)
+            mobileMenuKw.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                    mobileMenuKw.classList.add('hidden');
+                }
+            });
+        }
+    </script>
 </body>
-
 </html>

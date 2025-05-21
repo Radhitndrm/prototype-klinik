@@ -4,104 +4,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klinik | Belajar HTML & CSS</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="css-logo.png">
+    <title>Klinik | Belajar HTML & CSS - Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif; /* Mengatur font utama halaman */
+        }
+        /* Keyframes untuk animasi fadeIn */
+        @keyframes fadeIn {
+            from {
+                opacity: 0; /* Mulai dari transparan */
+                transform: translateY(20px); /* Mulai sedikit dari bawah */
+            }
+            to {
+                opacity: 1; /* Menjadi sepenuhnya terlihat */
+                transform: translateY(0); /* Kembali ke posisi normal */
+            }
+        }
+        /* Kelas untuk menerapkan animasi fadeIn */
+        .fade-in-effect {
+            animation: fadeIn 1s ease-in;
+        }
+
+        /* Scrollbar kustom untuk estetika (opsional) */
+        ::-webkit-scrollbar {
+            width: 8px; /* Lebar scrollbar */
+            height: 8px; /* Tinggi scrollbar (untuk horizontal) */
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8fbff; /* Warna latar belakang track scrollbar */
+            border-radius: 10px; /* Sudut melengkung untuk track */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8a2be2; /* Warna thumb scrollbar (ungu) */
+            border-radius: 10px; /* Sudut melengkung untuk thumb */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7a1fd9; /* Warna thumb saat dihover (ungu lebih gelap) */
+        }
+    </style>
+    <link rel="icon" href="https://placehold.co/32x32/8A2BE2/FFFFFF?text=FS&font=sans-serif" type="image/png">
 </head>
 
-<body>
-    <div class="container">
+<body class="leading-relaxed bg-gradient-to-r from-[#f8fbff] to-[#e0f0ff] text-[#333]">
+    <div class="max-w-6xl mx-auto p-5">
 
-        <!-- Navbar -->
-        <nav class="navbar">
-            <ul>
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#materi">Materi</a></li>
-                <li><a href="#project">Contoh Project</a></li>
-                <li><a href="#kontak">Kontak</a></li>
-            </ul </nav>
+        <nav class="flex justify-between items-center p-5 bg-white/90 backdrop-blur-sm rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] mb-10 sticky top-5 z-50 mx-auto">
+            <img src="/frontend/main/images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-lg max-w-[200px]" />
+            <ul class="hidden md:flex gap-8 list-none">
+                <li><a href="#home" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Beranda</a></li>
+                <li><a href="#materi" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Materi</a></li>
+                <li><a href="#project" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Contoh Project</a></li>
+                <li><a href="#kontak" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Kontak</a></li>
+            </ul>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-[#4a4a4a] focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white/90 backdrop-blur-sm rounded-xl shadow-lg mt-2 py-2 sticky top-[85px] z-40 mx-auto">
+            <a href="#home" class="block px-4 py-2 text-[#4a4a4a] font-semibold hover:bg-[#f0e6ff] hover:text-[#8a2be2]">Beranda</a>
+            <a href="#materi" class="block px-4 py-2 text-[#4a4a4a] font-semibold hover:bg-[#f0e6ff] hover:text-[#8a2be2]">Materi</a>
+            <a href="#project" class="block px-4 py-2 text-[#4a4a4a] font-semibold hover:bg-[#f0e6ff] hover:text-[#8a2be2]">Contoh Project</a>
+            <a href="#kontak" class="block px-4 py-2 text-[#4a4a4a] font-semibold hover:bg-[#f0e6ff] hover:text-[#8a2be2]">Kontak</a>
+        </div>
 
-            <!-- Hero Section -->
-            <header id="home" class="hero">
-                <img src="logo.png" alt="Komunitas Klinik" class="hero-img">
-                <h1>Divisi <span class="highlight">Full-Stack Developer</span></h1>
-                <p>Membangun Komunitas Full-Stack hingga sampai ke puncak.</p>
-                <a href="../main/index.html"><button class="button-to-main">Kembali ke halaman utama</button></a>
-            </header>
 
-            <!-- Materi Section -->
-            <section id="materi" class="card fade-in">
-                <h2>📘 Materi HTML & CSS</h2>
+        <header id="home" class="text-center py-16 px-5 bg-gradient-to-br from-[#d6e4ff] to-[#f5eaff] rounded-2xl mt-12 mb-12 shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+            <img src="https://placehold.co/160x160/FFFFFF/333?text=Klinik&font=sans-serif" alt="Komunitas Klinik" class="max-w-[100px] mx-auto mb-5 rounded-full border-4 border-white shadow-[0_6px_16px_rgba(0,0,0,0.1)]">
+            <h1 class="text-3xl md:text-[2.7rem] mb-2.5 font-bold">Divisi <span class="text-[#8a2be2]">Full-Stack Developer</span></h1>
+            <p class="text-lg md:text-xl text-[#5e5e5e] mb-4">Membangun Komunitas Full-Stack hingga sampai ke puncak.</p>
+            <a href="../main/index.html">
+                <button class="mt-[15px] py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">
+                    Kembali ke halaman utama
+                </button>
+            </a>
+        </header>
 
-                <h3>📄 HTML</h3>
-                <div class="button-group">
-                    <a href="../HTML/Dasar/index.html"><button>HTML Dasar</button></a>
-                    <a href="../HTML/Form/index.html"><button>HTML Form</button></a>
-                    <a href="../HTML/Tabel/index.html"><button>HTML Tabel</button></a>
+        <section id="materi" class="bg-white rounded-2xl px-[30px] py-10 mb-12 shadow-[0_6px_18px_rgba(0,0,0,0.04)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#333]">📘 Materi HTML & CSS</h2>
+            <h3 class="text-xl font-semibold mt-6 mb-3 text-[#333]">📄 HTML</h3>
+            <div class="flex flex-wrap gap-[15px] mt-2.5">
+                <a href="../HTML/Dasar/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">HTML Dasar</button></a>
+                <a href="../HTML/Form/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">HTML Form</button></a>
+                <a href="../HTML/Tabel/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">HTML Tabel</button></a>
                 </div>
 
-                <h3>🎨 CSS</h3>
-                <div class="button-group">
-                    <a href="../CSS/Color/index.html"><button>Color</button></a>
-                    <a href="../CSS/Id & Class/index.html"><button>ID & Class</button></a>
-                    <a href="../CSS/Font/index.html"><button>Font</button></a>
-                    <a href="../CSS/Border/index.html"><button>Border</button></a>
-                    <a href="../CSS/Shadow/index.html"><button>Shadow</button></a>
-                    <a href="../CSS/Margin/index.html"><button>Margin</button></a>
-                    <a href="../CSS/Float/index.html"><button>Float</button></a>
-                    <a href="../CSS/OverFlow/index.html"><button>Overflow</button></a>
-                    <a href="../CSS/Display/index.html"><button>Display</button></a>
-                    <a href="../CSS/Height&Width/index.html"><button>Height & Width</button></a>
-                    <a href="../CSS/Positions/index.html"><button>Position</button></a>
-                    <a href="../CSS/Background_image/index.html"><button>Background Image</button></a>
-                    <a href="../CSS/Combinator/index.html"><button>Combinator</button></a>
-                    <a href="../CSS/Pseudo_class/index.html"><button>Pseudo-class</button></a>
+            <h3 class="text-xl font-semibold mt-8 mb-3 text-[#333]">🎨 CSS</h3>
+            <div class="flex flex-wrap gap-[15px] mt-2.5">
+                <a href="../CSS/Color/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Color</button></a>
+                <a href="../CSS/Id & Class/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">ID & Class</button></a>
+                <a href="../CSS/Font/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Font</button></a>
+                <a href="../CSS/Border/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Border</button></a>
+                <a href="../CSS/Shadow/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Shadow</button></a>
+                <a href="../CSS/Margin/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Margin</button></a>
+                <a href="../CSS/Float/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Float</button></a>
+                <a href="../CSS/OverFlow/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Overflow</button></a>
+                <a href="../CSS/Display/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Display</button></a>
+                <a href="../CSS/Height&Width/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Height & Width</button></a>
+                <a href="../CSS/Positions/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Position</button></a>
+                <a href="../CSS/Background_image/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Background Image</button></a>
+                <a href="../CSS/Combinator/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Combinator</button></a>
+                <a href="../CSS/Pseudo_class/index.html"><button class="py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">Pseudo-class</button></a>
+            </div>
+        </section>
+
+        <section id="project" class="bg-white rounded-2xl px-[30px] py-10 mb-12 shadow-[0_6px_18px_rgba(0,0,0,0.04)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#333]">🏆 Prestasi Divisi Full-Stack </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-4">
+                <div class="bg-[#fdfdff] rounded-xl overflow-hidden shadow-[0_4px_14px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/AABBCC/333?text=Landing+Page&font=sans-serif" alt="Landing Page" class="w-full h-[160px] md:h-[180px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Landing Page</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Contoh halaman utama sederhana dengan layout responsif.</p>
+                    <a href="projects/landing-page.html">
+                        <button class="ml-[15px] py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                        </a>
                 </div>
-            </section>
 
-            <!-- Project Cards -->
-            <section id="project" class="card fade-in">
-                <h2>🏆 Prestasi Divisi Full-Stack </h2>
-                <div class="projects">
-                    <div class="project-card">
-                        <img src="images/project1.jpg" alt="Landing Page">
-                        <h3>Landing Page</h3>
-                        <p>Contoh halaman utama sederhana dengan layout responsif.</p>
-                        <a href="projects/landing-page.html">
-                            <button class="project-button">Lihat Selengkapnya</button>
-                        </a>
-                    </div>
-                    <div class="project-card">
-                        <img src="images/project2.jpg" alt="Portofolio">
-                        <h3>Portofolio Pribadi</h3>
-                        <p>Website portofolio dengan animasi dan tampilan bersih.</p>
-                        <a href="projects/portofolio.html">
-                            <button class="project-button">Lihat Selengkapnya</button>
-                        </a>
-                    </div>
-                    <div class="project-card">
-                        <img src="images/project3.jpg" alt="Blog Pribadi">
-                        <h3>Blog Sederhana</h3>
-                        <p>Membuat blog statis dengan artikel dan sidebar navigasi.</p>
-                        <a href="projects/blog.html">
-                            <button class="project-button">Lihat Selengkapnya</button>
-                        </a>
-                    </div>
+                <div class="bg-[#fdfdff] rounded-xl overflow-hidden shadow-[0_4px_14px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/BBDDEE/333?text=Portofolio&font=sans-serif" alt="Portofolio" class="w-full h-[160px] md:h-[180px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Portofolio Pribadi</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Website portofolio dengan animasi dan tampilan bersih.</p>
+                    <a href="projects/portofolio.html">
+                        <button class="ml-[15px] py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
-            </section>
 
-            <!-- Kontak -->
-            <section id="kontak" class="card fade-in">
-                <h2>📬 Kontak Kami</h2>
-                <p>Email: klinikwebdev@gmail.com</p>
-                <p>Instagram: @klinikwebdev</p>
-            </section>
+                <div class="bg-[#fdfdff] rounded-xl overflow-hidden shadow-[0_4px_14px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/CCDDEE/333?text=Blog&font=sans-serif" alt="Blog Pribadi" class="w-full h-[160px] md:h-[180px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Blog Sederhana</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Membuat blog statis dengan artikel dan sidebar navigasi.</p>
+                    <a href="projects/blog.html">
+                        <button class="ml-[15px] py-3 px-5 bg-gradient-to-r from-[#8a2be2] to-[#5c83f3] text-white border-none rounded-lg font-semibold shadow-[0_4px_8px_rgba(138,43,226,0.2)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#7a1fd9] hover:to-[#4c6fe0] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-            <!-- Footer -->
-            <footer>
-                <p>&copy; 2025 Komunitas Klinik. Belajar bareng, berkembang bareng.</p>
-            </footer>
-    </div>
+        <section id="kontak" class="bg-white rounded-2xl px-[30px] py-10 mb-12 shadow-[0_6px_18px_rgba(0,0,0,0.04)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#333]">📬 Kontak Kami</h2>
+            <p class="text-gray-700 mb-2">Email: klinikwebdev@gmail.com</p> <p class="text-gray-700">Instagram: @klinikwebdev</p>
+        </section>
+
+        <footer class="text-center p-5 text-[#888] text-sm border-t border-[#ddd]">
+            <p>&copy; 2025 Komunitas Klinik. Belajar bareng, berkembang bareng.</p>
+        </footer>
+    </div> <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Menutup menu mobile jika diklik di luar area menu atau link di dalam menu
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnButton = mobileMenuButton.contains(event.target);
+
+            if (!isClickInsideMenu && !isClickOnButton && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+         // Menutup menu mobile jika link di dalam menu diklik (untuk navigasi halaman)
+        mobileMenu.addEventListener('click', function(event) {
+            if (event.target.tagName === 'A') {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
-
 </html>
