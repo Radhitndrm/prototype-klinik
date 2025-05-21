@@ -4,85 +4,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Divisi Jaringan Komputer | Klinik</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="css-logo.png">
+    <title>Divisi Jaringan Komputer | Klinik - Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+        /* Keyframes for fadeIn animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Class to apply the animation */
+        .fade-in-effect {
+            animation: fadeIn 1s ease-in;
+        }
+
+        /* Custom scrollbar for better aesthetics (optional) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5ff; /* Light background for the track */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8b5cf6; /* Purple color for the thumb */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed; /* Darker purple on hover */
+        }
+    </style>
+    <link rel="icon" href="https://placehold.co/32x32/8B5CF6/FFFFFF?text=CSS&font=sans-serif" type="image/png">
 </head>
 
-<body>
-    <div class="container">
-
-        <!-- Navbar -->
-        <nav class="navbar">
-            <ul>
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#materi">Materi Jaringan</a></li>
-                <li><a href="#project">Project</a></li>
-                <li><a href="#kontak">Kontak</a></li>
+<body class="leading-relaxed bg-gradient-to-r from-[#f1f5ff] to-[#e3e4ff] text-[#2b2b2b]">
+    <div class="max-w-6xl mx-auto p-5">
+        <nav class="flex justify-between items-center p-5 bg-white rounded-lg shadow-md mb-10 sticky top-0 z-20">
+            <img src="/frontend/main/images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-lg max-w-[200px]" />
+            <ul class="hidden md:flex gap-8 list-none">
+                <li><a href="#" class="text-gray-800 font-medium hover:text-purple-600 transition">Beranda</a></li>
+                <li><a href="#visi-misi" class="text-gray-800 font-medium hover:text-purple-600 transition">Materi Jaringan</a></li>
+                <li><a href="#divisi" class="text-gray-800 font-medium hover:text-purple-600 transition">Project</a></li>
+                <li><a href="#kontak" class="text-gray-800 font-medium hover:text-purple-600 transition">Kontak</a></li>
             </ul>
         </nav>
 
-        <!-- Hero Section -->
-        <header id="home" class="hero">
-            <img src="images/network-hero.jpg" alt="Divisi Jaringan" class="hero-img">
-            <h1>Divisi <span class="highlight">Jaringan Komputer</span></h1>
-            <p>Membentuk fondasi kuat dalam dunia jaringan dan komunikasi data.</p>
-            <a href="../main/index.html"><button class="button-to-main">Kembali ke halaman utama</button></a>
+        <header id="home" class="text-center py-16 px-5 bg-gradient-to-br from-[#bfe9ff] to-[#e2ccff] rounded-2xl mb-12 shadow-[0_6px_20px_rgba(0,0,0,0.05)]">
+            <img src="https://placehold.co/160x160/FFFFFF/333?text=Jaringan&font=sans-serif" alt="Divisi Jaringan" class="max-w-[100px] mx-auto mb-5 rounded-full border-4 border-white shadow-[0_6px_16px_rgba(0,0,0,0.1)]">
+            <h1 class="text-[2.7rem] md:text-[2.7rem] text-3xl mb-2.5 font-bold">Divisi <span class="text-[#9333ea]">Jaringan Komputer</span></h1>
+            <p class="text-xl text-[#575757] mb-4">Membentuk fondasi kuat dalam dunia jaringan dan komunikasi data.</p>
+            <a href="../main/index.html">
+                <button class="mt-[15px] py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                    Kembali ke halaman utama
+                </button>
+            </a>
         </header>
 
-        <!-- Materi Section -->
-        <section id="materi" class="card fade-in">
-            <h2>📡 Materi Jaringan Komputer</h2>
-
-            <div class="button-group">
-                <a href="materi/pengenalan-jaringan.html"><button>Pengenalan Jaringan</button></a>
-                <a href="materi/topologi.html"><button>Topologi Jaringan</button></a>
-                <a href="materi/perangkat-jaringan.html"><button>Perangkat Jaringan</button></a>
-                <a href="materi/ip-address.html"><button>IP Address</button></a>
-                <a href="materi/subnetting.html"><button>Subnetting</button></a>
-                <a href="materi/dns-dhcp.html"><button>DNS & DHCP</button></a>
-                <a href="materi/ping-traceroute.html"><button>Ping & Traceroute</button></a>
+        <section id="materi" class="bg-white rounded-[18px] px-[30px] py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">📡 Materi Jaringan Komputer</h2>
+            <div class="flex flex-wrap gap-[15px] mt-2.5">
+                <a href="materi/pengenalan-jaringan.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Pengenalan Jaringan</button></a>
+                <a href="materi/topologi.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Topologi Jaringan</button></a>
+                <a href="materi/perangkat-jaringan.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Perangkat Jaringan</button></a>
+                <a href="materi/ip-address.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">IP Address</button></a>
+                <a href="materi/subnetting.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Subnetting</button></a>
+                <a href="materi/dns-dhcp.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">DNS & DHCP</button></a>
+                <a href="materi/ping-traceroute.html"><button class="py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">Ping & Traceroute</button></a>
             </div>
         </section>
 
-        <!-- Project Section -->
-        <section id="project" class="card fade-in">
-            <h2>🏆 Prestasi </h2>
-            <div class="projects">
-                <div class="project-card">
-                    <img src="images/project1.jpg" alt="Simulasi Topologi">
-                    <h3>Simulasi Topologi</h3>
-                    <p>Merancang topologi LAN sederhana dengan Cisco Packet Tracer.</p>
-                    <a href="projects/topologi-simulasi.html"><button class="project-button">Lihat
-                            Selengkapnya</button></a>
+        <section id="project" class="bg-white rounded-[18px] px-[30px] py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">🏆 Prestasi </h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6 pb-4">
+                <div class="bg-[#f7f7fe] rounded-[14px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/DDDDDD/333?text=Simulasi+Topologi&font=sans-serif" alt="Simulasi Topologi" class="w-full h-[180px] md:h-[180px] h-[160px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Simulasi Topologi</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Merancang topologi LAN sederhana dengan Cisco Packet Tracer.</p>
+                    <a href="projects/topologi-simulasi.html">
+                        <button class="ml-[15px] py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
-                <div class="project-card">
-                    <img src="images/project2.png" alt="Web Server Lokal">
-                    <h3>Web Server Lokal</h3>
-                    <p>Membuat web server dengan Apache dan akses lewat jaringan lokal.</p>
-                    <a href="projects/webserver.html"><button class="project-button">Lihat Selengkapnya</button></a>
+                <div class="bg-[#f7f7fe] rounded-[14px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/CCCCCC/333?text=Web+Server+Lokal&font=sans-serif" alt="Web Server Lokal" class="w-full h-[180px] md:h-[180px] h-[160px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Web Server Lokal</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Membuat web server dengan Apache dan akses lewat jaringan lokal.</p>
+                    <a href="projects/webserver.html">
+                        <button class="ml-[15px] py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
-                <div class="project-card">
-                    <img src="images/project3.jpeg" alt="Router DHCP">
-                    <h3>Router DHCP</h3>
-                    <p>Konfigurasi router agar otomatis memberikan IP menggunakan DHCP.</p>
-                    <a href="projects/router-dhcp.html"><button class="project-button">Lihat Selengkapnya</button></a>
+                <div class="bg-[#f7f7fe] rounded-[14px] overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 ease-in-out hover:-translate-y-1.5 pb-4">
+                    <img src="https://placehold.co/400x180/BBBBBB/333?text=Router+DHCP&font=sans-serif" alt="Router DHCP" class="w-full h-[180px] md:h-[180px] h-[160px] object-cover">
+                    <h3 class="px-[15px] pt-[15px] pb-[5px] text-lg font-semibold text-[#2e2e2e]">Router DHCP</h3>
+                    <p class="px-[15px] pb-[15px] text-[#555]">Konfigurasi router agar otomatis memberikan IP menggunakan DHCP.</p>
+                    <a href="projects/router-dhcp.html">
+                        <button class="ml-[15px] py-3 px-[22px] bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 ease-in-out hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- Kontak Section -->
-        <section id="kontak" class="card fade-in">
-            <h2>📬 Kontak Kami</h2>
-            <p>Email: jaringan@klinikwebdev.com</p>
-            <p>Instagram: @klinikjaringan</p>
+        <section id="kontak" class="bg-white rounded-[18px] px-[30px] py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">📬 Kontak Kami</h2>
+            <p class="text-gray-700 mb-2">Email: jaringan@klinikwebdev.com</p>
+            <p class="text-gray-700">Instagram: @klinikjaringan</p>
         </section>
 
-        <!-- Footer -->
-        <footer>
+        <footer class="text-center p-5 text-gray-500 text-sm border-t border-gray-300">
             <p>&copy; 2025 Klinik Webdev - Divisi Jaringan Komputer</p>
         </footer>
     </div>
 </body>
-
 </html>
