@@ -29,11 +29,11 @@
 
         <!-- Navbar -->
         <nav class="flex justify-between items-center p-5 bg-white/90 backdrop-blur-sm rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] mb-10 sticky top-5 z-50 mx-auto">
-            <img src="/frontend/main/images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-lg max-w-[200px]" />
+            <img src="/frontend/main/images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-md shadow-indigo-500/50 max-w-[200px]" />
             <ul class="hidden md:flex gap-8 list-none">
                 <li><a href="#home" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Beranda</a></li>
-                <li><a href="#materi" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Materi</a></li>
-                <li><a href="#project" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Contoh Project</a></li>
+                <li><a href="#materi" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Materi K3L</a></li>
+                <li><a href="#project" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Kegiatan</a></li>
                 <li><a href="#kontak" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Kontak</a></li>
             </ul>
             <div class="md:hidden">
@@ -133,5 +133,32 @@
 
     </div>
 </body>
+
+  </div> <script>
+        const mobileMenuButtonPm = document.getElementById('mobile-menu-button-pm');
+        const mobileMenuPm = document.getElementById('mobile-menu-pm');
+
+        if (mobileMenuButtonPm && mobileMenuPm) { // Pastikan elemen ada sebelum menambahkan event listener
+            mobileMenuButtonPm.addEventListener('click', () => {
+                mobileMenuPm.classList.toggle('hidden');
+            });
+
+            // Menutup menu mobile jika diklik di luar area menu atau link di dalam menu
+            document.addEventListener('click', function(event) {
+                const isClickInsideMenu = mobileMenuPm.contains(event.target);
+                const isClickOnButton = mobileMenuButtonPm.contains(event.target);
+
+                if (!isClickInsideMenu && !isClickOnButton && !mobileMenuPm.classList.contains('hidden')) {
+                    mobileMenuPm.classList.add('hidden');
+                }
+            });
+             // Menutup menu mobile jika link di dalam menu diklik (untuk navigasi halaman)
+            mobileMenuPm.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                    mobileMenuPm.classList.add('hidden');
+                }
+            });
+        }
+    </script>
 
 </html>
