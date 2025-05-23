@@ -5,78 +5,129 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Divisi Kesehatan, Keselamatan, dan Lingkungan | TMC</title>
-    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="images/k3l-icon.png" />
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in-effect {
+            animation: fadeIn 1s ease-in;
+        }
+    </style>
 </head>
 
-<body>
-    <div class="container">
+<body class="font-['Segoe_UI'] leading-relaxed bg-gradient-to-r from-[#f1f5ff] to-[#e3e4ff] text-[#2b2b2b]">
+    <div class="max-w-[1200px] mx-auto p-5">
 
         <!-- Navbar -->
-        <nav class="navbar">
-            <ul>
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#materi">Materi K3L</a></li>
-                <li><a href="#project">Kegiatan</a></li>
-                <li><a href="#kontak">Kontak</a></li>
+        <nav class="flex justify-between items-center p-5 bg-white/90 backdrop-blur-sm rounded-xl shadow-[0_2px_12px_rgba(0,0,0,0.08)] mb-10 sticky top-5 z-50 mx-auto">
+            <img src="/frontend/main/images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-lg max-w-[200px]" />
+            <ul class="hidden md:flex gap-8 list-none">
+                <li><a href="#home" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Beranda</a></li>
+                <li><a href="#materi" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Materi</a></li>
+                <li><a href="#project" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Contoh Project</a></li>
+                <li><a href="#kontak" class="text-[#4a4a4a] font-semibold transition-colors duration-300 ease-in-out hover:text-[#8a2be2]">Kontak</a></li>
             </ul>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-[#4a4a4a] focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
         </nav>
 
         <!-- Hero Section -->
-        <header id="home" class="hero">
-            <img src="images/k3l-hero.jpg" alt="Divisi K3L" class="hero-img" />
-            <h1>Divisi <span class="highlight">Kesehatan, Keselamatan, dan Lingkungan</span></h1>
-            <p>Mewujudkan lingkungan kerja dan belajar yang sehat, aman, dan berkelanjutan.</p>
-            <a href="../main/index.html"><button class="button-to-main">Kembali ke halaman utama</button></a>
+        <header id="home" class="text-center py-16 px-5 bg-gradient-to-br from-[#bfe9ff] to-[#e2ccff] rounded-2xl mb-12 shadow-[0_6px_20px_rgba(0,0,0,0.05)]">
+            <img src="images/k3l-hero.jpg" alt="Divisi K3L" class="max-w-[160px] mx-auto mb-5 rounded-full border-4 border-white shadow-[0_6px_16px_rgba(0,0,0,0.1)]" />
+            <h1 class="text-3xl md:text-[2.7rem] mb-3 font-bold">Divisi <span class="text-[#9333ea]">Kesehatan, Keselamatan, dan Lingkungan</span></h1>
+            <p class="text-lg md:text-xl text-[#575757] mb-4">Mewujudkan lingkungan kerja dan belajar yang sehat, aman, dan berkelanjutan.</p>
+            <a href="../main/index.html">
+                <button class="mt-4 py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                    Kembali ke halaman utama
+                </button>
+            </a>
         </header>
 
         <!-- Materi Section -->
-        <section id="materi" class="card fade-in">
-            <h2>🏆 Prestasi</h2>
-            <div class="button-group">
-                <a href="materi/kesehatan-kerja.html"><button>Kesehatan Kerja</button></a>
-                <a href="materi/keselamatan-lab.html"><button>Keselamatan di Laboratorium</button></a>
-                <a href="materi/penanggulangan-bencana.html"><button>Penanggulangan Bencana</button></a>
-                <a href="materi/lingkungan-hidup.html"><button>Kesadaran Lingkungan</button></a>
+        <section id="materi" class="bg-white rounded-2xl px-8 py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">🏆 Prestasi</h2>
+            <div class="flex flex-wrap gap-4 mt-3">
+                <a href="materi/kesehatan-kerja.html">
+                    <button class="py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                        Kesehatan Kerja
+                    </button>
+                </a>
+                <a href="materi/keselamatan-lab.html">
+                    <button class="py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                        Keselamatan di Laboratorium
+                    </button>
+                </a>
+                <a href="materi/penanggulangan-bencana.html">
+                    <button class="py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                        Penanggulangan Bencana
+                    </button>
+                </a>
+                <a href="materi/lingkungan-hidup.html">
+                    <button class="py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                        Kesadaran Lingkungan
+                    </button>
+                </a>
             </div>
         </section>
 
         <!-- Project Section -->
-        <section id="project" class="card fade-in">
-            <h2>🧯 Kegiatan K3L</h2>
-            <div class="projects">
-                <div class="project-card">
-                    <img src="images/k3l-simulasi.jpg" alt="Simulasi K3" />
-                    <h3>Simulasi Keadaan Darurat</h3>
-                    <p>Latihan evakuasi dan penanggulangan kebakaran di lingkungan kampus.</p>
-                    <a href="projects/simulasi-darurat.html"><button class="project-button">Lihat
-                            Selengkapnya</button></a>
+        <section id="project" class="bg-white rounded-2xl px-8 py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">🧯 Kegiatan K3L</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-4">
+                <div class="bg-[#f7f7fe] rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-1.5 pb-4">
+                    <img src="images/k3l-simulasi.jpg" alt="Simulasi K3" class="w-full h-[180px] object-cover" />
+                    <h3 class="px-4 pt-4 pb-2 text-lg font-semibold text-[#2e2e2e]">Simulasi Keadaan Darurat</h3>
+                    <p class="px-4 pb-4 text-[#555]">Latihan evakuasi dan penanggulangan kebakaran di lingkungan kampus.</p>
+                    <a href="projects/simulasi-darurat.html">
+                        <button class="ml-4 py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
-                <div class="project-card">
-                    <img src="images/k3l-bersih.jpg" alt="Aksi Bersih" />
-                    <h3>Aksi Bersih Kampus</h3>
-                    <p>Program kebersihan dan daur ulang untuk menjaga lingkungan yang sehat.</p>
-                    <a href="projects/aksi-bersih.html"><button class="project-button">Lihat Selengkapnya</button></a>
+                <div class="bg-[#f7f7fe] rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-1.5 pb-4">
+                    <img src="images/k3l-bersih.jpg" alt="Aksi Bersih" class="w-full h-[180px] object-cover" />
+                    <h3 class="px-4 pt-4 pb-2 text-lg font-semibold text-[#2e2e2e]">Aksi Bersih Kampus</h3>
+                    <p class="px-4 pb-4 text-[#555]">Program kebersihan dan daur ulang untuk menjaga lingkungan yang sehat.</p>
+                    <a href="projects/aksi-bersih.html">
+                        <button class="ml-4 py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
-                <div class="project-card">
-                    <img src="images/k3l-kesehatan.jpg" alt="Pemeriksaan Kesehatan" />
-                    <h3>Pemeriksaan Kesehatan</h3>
-                    <p>Fasilitasi cek kesehatan rutin bagi anggota dan mahasiswa.</p>
-                    <a href="projects/kesehatan-rutin.html"><button class="project-button">Lihat
-                            Selengkapnya</button></a>
+                <div class="bg-[#f7f7fe] rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-1.5 pb-4">
+                    <img src="images/k3l-kesehatan.jpg" alt="Pemeriksaan Kesehatan" class="w-full h-[180px] object-cover" />
+                    <h3 class="px-4 pt-4 pb-2 text-lg font-semibold text-[#2e2e2e]">Pemeriksaan Kesehatan</h3>
+                    <p class="px-4 pb-4 text-[#555]">Fasilitasi cek kesehatan rutin bagi anggota dan mahasiswa.</p>
+                    <a href="projects/kesehatan-rutin.html">
+                        <button class="ml-4 py-3 px-5 bg-gradient-to-r from-[#6366f1] to-[#8b5cf6] text-white border-none rounded-lg font-semibold shadow-[0_4px_10px_rgba(139,92,246,0.25)] cursor-pointer transition-all duration-300 hover:from-[#4f46e5] hover:to-[#7c3aed] hover:-translate-y-0.5">
+                            Lihat Selengkapnya
+                        </button>
+                    </a>
                 </div>
             </div>
         </section>
 
         <!-- Kontak Section -->
-        <section id="kontak" class="card fade-in">
-            <h2>📬 Kontak Kami</h2>
-            <p>Email: k3l@klinikwebdev.com</p>
-            <p>Instagram: @klinikk3l</p>
+        <section id="kontak" class="bg-white rounded-2xl px-8 py-10 mb-12 shadow-[0_6px_22px_rgba(0,0,0,0.05)] fade-in-effect">
+            <h2 class="text-2xl font-bold mb-6 text-[#2b2b2b]">📬 Kontak Kami</h2>
+            <p class="text-[#555] mb-2">Email: k3l@klinikwebdev.com</p>
+            <p class="text-[#555]">Instagram: @klinikk3l</p>
         </section>
 
         <!-- Footer -->
-        <footer>
+        <footer class="text-center p-5 text-[#888] text-sm border-t border-[#ddd]">
             <p>&copy; 2025 Klinik Webdev - Divisi Kesehatan, Keselamatan, dan Lingkungan</p>
         </footer>
 
