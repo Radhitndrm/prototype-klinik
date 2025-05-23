@@ -1,25 +1,44 @@
 <?php
 // users.php
 
-require '../../database/connection.php';
+require '../../database/connection.php'; // sudah ada $pdo
 
 try {
-    // Ambil semua user beserta divisinya (via mentor_divisi)
-    $users = $pdo->query("
+    // Ambil data anggota dan mentor (role = 'anggota', 'mentor')
+    $users = $pdo->prepare("SELECT id_user, nama, email, role FROM users WHERE role IN ('anggota', 'mentor') ORDER BY nama");
+    $users->execute();
+    $list_users = $users->fetchAll(PDO::FETCH_ASSOC);
+
+    // Ambil data anggota (role = 'anggota')
+    $anggota_only = $pdo->prepare("SELECT id_user, nama, email FROM users WHERE role = 'anggota' ORDER BY nama");
+    $anggota_only->execute();
+    $list_anggota_only = $anggota_only->fetchAll(PDO::FETCH_ASSOC);
+
+    // Ambil data mentor beserta divisinya (gabungkan divisi jadi satu string)
+    $mentor = $pdo->prepare("
         SELECT 
-            users.id_user, users.nama, users.email, users.role, divisi.id_divisi, divisi.nama_divisi
+            users.id_user, users.nama, users.email, users.role,
+            GROUP_CONCAT(divisi.id_divisi) AS divisi_ids,
+            GROUP_CONCAT(divisi.nama_divisi SEPARATOR ', ') AS divisi_names
         FROM users
         LEFT JOIN mentor_divisi ON users.id_user = mentor_divisi.id_user
         LEFT JOIN divisi ON mentor_divisi.id_divisi = divisi.id_divisi
+        WHERE users.role = 'mentor'
+        GROUP BY users.id_user
         ORDER BY users.nama
-    ")->fetchAll(PDO::FETCH_ASSOC);
+    ");
+    $mentor->execute();
+    $list_mentor = $mentor->fetchAll(PDO::FETCH_ASSOC);
 
     // Ambil semua divisi untuk dropdown di modal
-    $all_divisi = $pdo->query("SELECT id_divisi, nama_divisi FROM divisi ORDER BY nama_divisi")->fetchAll(PDO::FETCH_ASSOC);
+    $divisi_stmt = $pdo->prepare("SELECT id_divisi, nama_divisi FROM divisi ORDER BY nama_divisi");
+    $divisi_stmt->execute();
+    $all_divisi = $divisi_stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Gagal mengambil data users: " . $e->getMessage());
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -32,7 +51,6 @@ try {
 
 <body class="bg-gray-100 font-sans text-gray-800">
     <div class="flex min-h-screen">
-
         <!-- Sidebar -->
         <aside
             class="w-64 bg-gray-800 fixed inset-y-0 left-0 flex flex-col justify-between border-r border-gray-700 shadow-lg">
@@ -56,7 +74,7 @@ try {
                             </svg>
                             Divisi Management
                         </a>
-                        <a href="user.php"
+                        <a href="users.php"
                             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-700 hover:text-white transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -96,14 +114,14 @@ try {
         <div class="flex-1 ml-64 flex flex-col">
 
             <!-- Header -->
-            <header class="flex justify-between items-center bg-indigo-900 shadow-md p-4 sticky top-0 z-10">
+            <header class="flex justify-between items-center bg-purple-900 shadow-md p-4 sticky top-0 z-10">
                 <div class="text-xl font-semibold text-white">Kelola Pengguna</div>
                 <div class="flex items-center space-x-4">
                     <input type="search" placeholder="Search..."
-                        class="px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 border border-indigo-700 bg-indigo-800 text-white placeholder-indigo-300" />
+                        class="px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 border border-purple-700 bg-purple-800 text-white placeholder-purple-300" />
                     <div class="flex items-center space-x-3 cursor-pointer">
                         <div
-                            class="w-10 h-10 rounded-full bg-indigo-700 flex items-center justify-center font-bold text-white select-none">A
+                            class="w-10 h-10 rounded-full bg-purple-700 flex items-center justify-center font-bold text-white select-none">A
                         </div>
                         <div class="text-white font-medium">Admin</div>
                     </div>
@@ -112,37 +130,50 @@ try {
 
             <!-- Main content -->
             <main class="p-6 overflow-y-auto flex-1 bg-gray-50">
-                <?php if (isset($_GET['success'])): ?>
+
+                <?php if (isset($_GET['success-user'])): ?>
                     <div class="mb-4 p-3 bg-green-200 text-green-800 rounded">Data pengguna berhasil diperbarui.</div>
                 <?php endif; ?>
+                <?php if (isset($_GET['success-mentor'])): ?>
+                    <div class="mb-4 p-3 bg-green-200 text-green-800 rounded">Data mentor berhasil diperbarui.</div>
+                <?php endif; ?>
 
-                <section id="users" class="mb-10">
+
+                <!-- Tabel Anggota -->
+                <section id="anggota" class="mb-10">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-semibold">Daftar Anggota</h2>
+                        <!-- Tombol Tambah Mentor Baru -->
+                        <button id="open-add-mentor-modal" class="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition">
+                            + Tambah Mentor Baru
+                        </button>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white rounded shadow">
-                            <thead class="bg-indigo-700 text-white">
+                            <thead class="bg-purple-700 text-white">
                                 <tr>
                                     <th class="py-3 px-4 text-left">Nama</th>
                                     <th class="py-3 px-4 text-left">Email</th>
-                                    <th class="py-3 px-4 text-left">Role</th>
-                                    <th class="py-3 px-4 text-left">Divisi</th>
                                     <th class="py-3 px-4 text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($users as $user): ?>
+                                <?php foreach ($list_users as $user): ?>
                                     <tr class="border-b">
                                         <td class="py-3 px-4"><?= htmlspecialchars($user['nama']) ?></td>
                                         <td class="py-3 px-4"><?= htmlspecialchars($user['email']) ?></td>
-                                        <td class="py-3 px-4 capitalize"><?= htmlspecialchars($user['role']) ?></td>
-                                        <td class="py-3 px-4"><?= htmlspecialchars($user['nama_divisi'] ?? '-') ?></td>
                                         <td class="py-3 px-4 text-center">
-                                            <button class="edit-user-btn bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded shadow-sm transition-all"
+                                            <button class="edit-user-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded shadow-sm transition-all"
                                                 data-id="<?= $user['id_user'] ?>"
                                                 data-nama="<?= htmlspecialchars($user['nama'], ENT_QUOTES) ?>"
                                                 data-email="<?= htmlspecialchars($user['email'], ENT_QUOTES) ?>"
-                                                data-role="<?= $user['role'] ?>"
-                                                data-divisi-id="<?= $user['id_divisi'] ?? '' ?>">
+                                                data-role="<?= htmlspecialchars($user['role'], ENT_QUOTES) ?>">
                                                 Edit
+                                            </button>
+                                            <button class="delete-user-btn bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded shadow-sm transition-all"
+                                                data-id="<?= $user['id_user'] ?>"
+                                                data-nama="<?= htmlspecialchars($user['nama'], ENT_QUOTES) ?>">
+                                                Delete
                                             </button>
                                         </td>
                                     </tr>
@@ -152,106 +183,263 @@ try {
                     </div>
                 </section>
 
+                <!-- Tabel Mentor -->
+                <section id="mentor" class="mb-10">
+                    <h2 class="text-2xl font-semibold mb-4">Daftar Mentor</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white rounded shadow">
+                            <thead class="bg-purple-700 text-white">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">Nama</th>
+                                    <th class="py-3 px-4 text-left">Email</th>
+                                    <th class="py-3 px-4 text-left">Divisi</th>
+                                    <th class="py-3 px-4 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($list_mentor as $user): ?>
+                                    <tr class="border-b">
+                                        <td class="py-3 px-4"><?= htmlspecialchars($user['nama']) ?></td>
+                                        <td class="py-3 px-4"><?= htmlspecialchars($user['email']) ?></td>
+                                        <td class="py-3 px-4"><?= htmlspecialchars($user['divisi_names'] ?? '-') ?></td>
+                                        <td class="py-3 px-4 text-center">
+                                            <button class="edit-mentor-btn bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded shadow-sm transition-all"
+                                                data-id="<?= $user['id_user'] ?>"
+                                                data-nama="<?= htmlspecialchars($user['nama'], ENT_QUOTES) ?>"
+                                                data-email="<?= htmlspecialchars($user['email'], ENT_QUOTES) ?>"
+                                                data-role="<?= htmlspecialchars($user['role'], ENT_QUOTES) ?>"
+                                                data-divisi-ids="<?= htmlspecialchars($user['divisi_ids'] ?? '') ?>">
+                                                Edit
+                                            </button>
+                                            <button class="delete-user-btn bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded shadow-sm transition-all"
+                                                data-id="<?= $user['id_user'] ?>"
+                                                data-nama="<?= htmlspecialchars($user['nama'], ENT_QUOTES) ?>">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Modal Edit User (untuk role anggota) -->
+                <div id="modal-edit-user" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+                    <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+                        <h3 class="text-xl font-semibold mb-4">Edit Pengguna</h3>
+                        <form id="edit-user-form" method="post" action="../../functions/update_user.php">
+                            <input type="hidden" name="id_user" id="edit-user-id_user" />
+                            <div class="mb-4">
+                                <label for="edit-user-nama" class="block mb-1 font-semibold">Nama</label>
+                                <input type="text" id="edit-user-nama" name="nama" required
+                                    class="w-full border border-gray-300 rounded px-3 py-2" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="edit-user-email" class="block mb-1 font-semibold">Email</label>
+                                <input type="email" id="edit-user-email" name="email" required
+                                    class="w-full border border-gray-300 rounded px-3 py-2" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="edit-user-role" class="block mb-1 font-semibold">Role</label>
+                                <select id="edit-user-role" name="role" required
+                                    class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option value="anggota">Anggota</option>
+                                    <option value="mentor">Mentor</option>
+                                </select>
+                            </div>
+                            <div class="flex justify-end space-x-3">
+                                <button type="button" id="cancel-edit-user"
+                                    class="px-4 py-2 rounded border border-gray-400 hover:bg-gray-100 transition">Batal</button>
+                                <button type="submit"
+                                    class="px-4 py-2 rounded bg-purple-700 text-white hover:bg-purple-800 transition">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal Tambah Mentor Baru (convert anggota jadi mentor + pilih divisi) -->
+                <div id="modal-add-mentor" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+                    <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+                        <h3 class="text-xl font-semibold mb-4">Tambah Mentor Baru</h3>
+                        <form id="add-mentor-form" method="post" action="add_mentor.php">
+                            <div class="mb-4">
+                                <label for="add-mentor-id_user" class="block mb-1 font-semibold">Pilih Anggota</label>
+                                <select id="add-mentor-id_user" name="id_user" required
+                                    class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option value="" disabled selected>-- Pilih anggota --</option>
+                                    <?php foreach ($list_anggota_only as $anggota): ?>
+                                        <option value="<?= $anggota['id_user'] ?>">
+                                            <?= htmlspecialchars($anggota['nama']) ?> (<?= htmlspecialchars($anggota['email']) ?>)
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="add-mentor-divisi" class="block mb-1 font-semibold">Pilih Divisi</label>
+                                <select id="add-mentor-divisi" name="divisi_ids[]" multiple required
+                                    class="w-full border border-gray-300 rounded px-3 py-2 h-32 overflow-y-auto">
+                                    <?php foreach ($all_divisi as $div): ?>
+                                        <option value="<?= $div['id_divisi'] ?>"><?= htmlspecialchars($div['nama_divisi']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <small class="text-gray-600">Tekan Ctrl (Cmd) untuk memilih lebih dari satu divisi.</small>
+                            </div>
+                            <div class="flex justify-end space-x-3">
+                                <button type="button" id="cancel-add-mentor"
+                                    class="px-4 py-2 rounded border border-gray-400 hover:bg-gray-100 transition">Batal</button>
+                                <button type="submit"
+                                    class="px-4 py-2 rounded bg-green-700 text-white hover:bg-green-800 transition">Tambah Mentor</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal Edit Mentor (untuk update divisi mentor) -->
+                <div id="modal-edit-mentor" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+                    <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+                        <h3 class="text-xl font-semibold mb-4">Edit Mentor</h3>
+                        <form id="edit-mentor-form" method="post" action="../../functions/update_mentor.php">
+                            <input type="hidden" name="id_user" id="edit-mentor-id_user" />
+                            <div class="mb-4">
+                                <label for="edit-mentor-nama" class="block mb-1 font-semibold">Nama</label>
+                                <input type="text" id="edit-mentor-nama" name="nama" readonly
+                                    class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="edit-mentor-email" class="block mb-1 font-semibold">Email</label>
+                                <input type="email" id="edit-mentor-email" name="email" readonly
+                                    class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="edit-mentor-divisi" class="block mb-1 font-semibold">Pilih Divisi</label>
+                                <select id="edit-mentor-divisi" name="divisi_ids[]" multiple required
+                                    class="w-full border border-gray-300 rounded px-3 py-2 h-32 overflow-y-auto">
+                                    <?php foreach ($all_divisi as $div): ?>
+                                        <option value="<?= $div['id_divisi'] ?>"><?= htmlspecialchars($div['nama_divisi']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <small class="text-gray-600">Tekan Ctrl (Cmd) untuk memilih lebih dari satu divisi.</small>
+                            </div>
+                            <div class="flex justify-end space-x-3">
+                                <button type="button" id="cancel-edit-mentor"
+                                    class="px-4 py-2 rounded border border-gray-400 hover:bg-gray-100 transition">Batal</button>
+                                <button type="submit"
+                                    class="px-4 py-2 rounded bg-purple-700 text-white hover:bg-purple-800 transition">Simpan Perubahan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
 
-    <!-- Modal Popup Edit User -->
-    <div id="modal-edit-user" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white rounded-lg w-full max-w-md p-6 shadow-xl relative">
-            <h3 class="text-xl font-semibold text-indigo-700 mb-4">Edit Pengguna</h3>
-            <form id="form-edit-user" method="POST" action="../../functions/update_user.php">
-                <input type="hidden" name="id_user" id="input-id-user" />
-                <div class="mb-4">
-                    <label for="input-nama-user" class="block text-gray-700 font-semibold mb-1">Nama</label>
-                    <input type="text" id="input-nama-user" name="nama" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-                </div>
-                <div class="mb-4">
-                    <label for="input-email-user" class="block text-gray-700 font-semibold mb-1">Email</label>
-                    <input type="email" id="input-email-user" name="email" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-                </div>
-                <div class="mb-4">
-                    <label for="input-role-user" class="block text-gray-700 font-semibold mb-1">Role</label>
-                    <select id="input-role-user" name="role" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <option value="anggota">Anggota</option>
-                        <option value="mentor">Mentor</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label for="input-divisi-user" class="block text-gray-700 font-semibold mb-1">Divisi (khusus Mentor)</label>
-                    <select id="input-divisi-user" name="divisi_id" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" disabled>
-                        <option value="">-- Pilih Divisi --</option>
-                        <?php foreach ($all_divisi as $divisi): ?>
-                            <option value="<?= $divisi['id_divisi'] ?>"><?= htmlspecialchars($divisi['nama_divisi']) ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <div class="flex justify-end space-x-3">
-                    <button type="button" id="btn-cancel" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700">Simpan</button>
-                </div>
-            </form>
-            <button id="btn-close-modal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl leading-none">&times;</button>
-        </div>
-    </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('modal-edit-user');
-            const btnClose = document.getElementById('btn-close-modal');
-            const btnCancel = document.getElementById('btn-cancel');
+        // Modal elements
+        const modalEditUser = document.getElementById('modal-edit-user');
+        const modalAddMentor = document.getElementById('modal-add-mentor');
+        const modalEditMentor = document.getElementById('modal-edit-mentor');
 
-            const inputId = document.getElementById('input-id-user');
-            const inputNama = document.getElementById('input-nama-user');
-            const inputEmail = document.getElementById('input-email-user');
-            const inputRole = document.getElementById('input-role-user');
-            const inputDivisi = document.getElementById('input-divisi-user');
+        // Tombol batal di semua modal
+        document.getElementById('cancel-edit-user').addEventListener('click', () => {
+            modalEditUser.classList.add('hidden');
+        });
+        document.getElementById('cancel-add-mentor').addEventListener('click', () => {
+            modalAddMentor.classList.add('hidden');
+        });
+        document.getElementById('cancel-edit-mentor').addEventListener('click', () => {
+            modalEditMentor.classList.add('hidden');
+        });
 
-            function openModal(user) {
-                inputId.value = user.id;
-                inputNama.value = user.nama;
-                inputEmail.value = user.email;
-                inputRole.value = user.role;
-                inputDivisi.value = user.divisiId || '';
-                // Aktifkan dropdown divisi hanya jika role mentor
-                inputDivisi.disabled = (user.role !== 'mentor');
-                modal.classList.remove('hidden');
-            }
+        // Tombol buka modal tambah mentor baru
+        document.getElementById('open-add-mentor-modal').addEventListener('click', () => {
+            modalAddMentor.classList.remove('hidden');
+        });
 
-            function closeModal() {
-                modal.classList.add('hidden');
-            }
+        // Tombol edit user (anggota / mentor tanpa edit divisi)
+        document.querySelectorAll('.edit-user-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const idUser = button.dataset.id;
+                const nama = button.dataset.nama;
+                const email = button.dataset.email;
+                const role = button.dataset.role || 'anggota';
 
-            document.querySelectorAll('.edit-user-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const user = {
-                        id: btn.dataset.id,
-                        nama: btn.dataset.nama,
-                        email: btn.dataset.email,
-                        role: btn.dataset.role,
-                        divisiId: btn.dataset.divisiId
-                    };
-                    openModal(user);
-                });
-            });
-
-            // Jika role dropdown berubah, aktif/nonaktif divisi dropdown
-            inputRole.addEventListener('change', function() {
-                if (this.value === 'mentor') {
-                    inputDivisi.disabled = false;
-                } else {
-                    inputDivisi.disabled = true;
-                    inputDivisi.value = '';
+                // Jika role mentor, sarankan buka modal edit mentor (divisi)
+                if (role === 'mentor') {
+                    // Cari tombol edit mentor yang sesuai dan trigger klik-nya
+                    // Atau langsung isi modal edit mentor dan buka modal edit mentor
+                    alert('Untuk mengedit mentor, gunakan tombol edit di tabel mentor.');
+                    return;
                 }
+
+                // Isi form modal edit user
+                document.getElementById('edit-user-id_user').value = idUser;
+                document.getElementById('edit-user-nama').value = nama;
+                document.getElementById('edit-user-email').value = email;
+                document.getElementById('edit-user-role').value = role;
+
+                modalEditUser.classList.remove('hidden');
             });
+        });
 
-            btnClose.addEventListener('click', closeModal);
-            btnCancel.addEventListener('click', closeModal);
+        // Tombol edit mentor (buka modal edit mentor)
+        document.querySelectorAll('.edit-mentor-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const idUser = button.dataset.id;
+                const nama = button.dataset.nama;
+                const email = button.dataset.email;
+                const role = button.dataset.role || 'mentor';
+                const divisiIds = button.dataset.divisiIds || '';
 
-            // Klik luar modal untuk menutup
-            window.addEventListener('click', function(e) {
-                if (e.target === modal) closeModal();
+                if (role !== 'mentor') {
+                    alert('Data ini bukan mentor.');
+                    return;
+                }
+
+                // Isi modal edit mentor
+                document.getElementById('edit-mentor-id_user').value = idUser;
+                document.getElementById('edit-mentor-nama').value = nama;
+                document.getElementById('edit-mentor-email').value = email;
+
+                // Reset pilihan divisi
+                const selectDivisi = document.getElementById('edit-mentor-divisi');
+                Array.from(selectDivisi.options).forEach(option => option.selected = false);
+
+                // Pilih sesuai divisi_ids
+                if (divisiIds.length > 0) {
+                    const arrDivisi = divisiIds.split(',');
+                    arrDivisi.forEach(id => {
+                        const opt = selectDivisi.querySelector(`option[value="${id}"]`);
+                        if (opt) opt.selected = true;
+                    });
+                }
+
+                modalEditMentor.classList.remove('hidden');
+            });
+        });
+
+        // Tombol delete user (konfirmasi)
+        document.querySelectorAll('.delete-user-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const idUser = button.dataset.id;
+                const nama = button.dataset.nama;
+                if (confirm(`Yakin ingin menghapus pengguna "${nama}"? Tindakan ini tidak dapat dibatalkan.`)) {
+                    // Kirim request delete ke delete_user.php via POST (bisa pakai form tersembunyi)
+                    // Contoh sederhana:
+                    fetch('delete_user.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `id_user=${encodeURIComponent(idUser)}`
+                        }).then(res => res.text())
+                        .then(data => {
+                            alert(data);
+                            location.reload();
+                        })
+                        .catch(err => alert('Terjadi kesalahan: ' + err));
+                }
             });
         });
     </script>
