@@ -7,8 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($role) {
         if ($role == 'anggota') {
             header("Location: ../../frontend/main/index.html");
-        } else {
-            echo "anda adalah seorang sepuh";
+        } else if ($role == 'mentor') {
+            header("Location: mentor/index.php");
+        } else if ($role == 'admin') {
             header("Location: dashboard/index.php");
         }
         exit;

@@ -230,7 +230,7 @@ try {
                 <div id="modal-edit-user" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
                     <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
                         <h3 class="text-xl font-semibold mb-4">Edit Pengguna</h3>
-                        <form id="edit-user-form" method="post" action="../../functions/update_user_basic.php">
+                        <form id="edit-user-form" method="post" action="../../functions/edit_user_basic.php">
                             <input type="hidden" name="id_user" id="edit-user-id_user" />
                             <div class="mb-4">
                                 <label for="edit-user-nama" class="block mb-1 font-semibold">Nama</label>

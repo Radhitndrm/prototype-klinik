@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../database/connection.php';
+require '../database/connection.php';
 
 function login($email, $password)
 {
