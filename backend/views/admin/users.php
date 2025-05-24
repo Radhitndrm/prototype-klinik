@@ -230,7 +230,7 @@ try {
                 <div id="modal-edit-user" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
                     <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
                         <h3 class="text-xl font-semibold mb-4">Edit Pengguna</h3>
-                        <form id="edit-user-form" method="post" action="../../functions/edit_user_basic.php">
+                        <form id="edit-user-form" method="post" action="../../functions/admin/update_user_basic.php">
                             <input type="hidden" name="id_user" id="edit-user-id_user" />
                             <div class="mb-4">
                                 <label for="edit-user-nama" class="block mb-1 font-semibold">Nama</label>
@@ -257,7 +257,7 @@ try {
                 <div id="modal-add-mentor" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
                     <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
                         <h3 class="text-xl font-semibold mb-4">Tambah Mentor Baru</h3>
-                        <form id="add-mentor-form" method="post" action="../../functions/add_mentor.php">
+                        <form id="add-mentor-form" method="post" action="../../functions/admin/add_mentor.php">
                             <div class="mb-4">
                                 <label for="add-mentor-id_user" class="block mb-1 font-semibold">Pilih Anggota</label>
                                 <select id="add-mentor-id_user" name="id_user" required
@@ -294,7 +294,7 @@ try {
                 <div id="modal-edit-mentor" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
                     <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
                         <h3 class="text-xl font-semibold mb-4">Edit Mentor</h3>
-                        <form id="edit-mentor-form" method="post" action="../../functions/update_mentor.php">
+                        <form id="edit-mentor-form" method="post" action="../../functions/admin/update_mentor.php">
                             <input type="hidden" name="id_user" id="edit-mentor-id_user" />
                             <div class="mb-4">
                                 <label for="edit-mentor-nama" class="block mb-1 font-semibold">Nama</label>
@@ -412,7 +412,7 @@ try {
                 const idUser = button.dataset.id;
                 const nama = button.dataset.nama;
                 if (confirm(`Yakin ingin menghapus pengguna "${nama}"?`)) {
-                    fetch('../../functions/delete_user.php', {
+                    fetch('../../functions/admin/delete_user.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -435,7 +435,7 @@ try {
                 const idUser = button.dataset.id;
                 const nama = button.dataset.nama;
                 if (confirm(`Yakin ingin menghapus mentor "${nama}"? Role akan diubah menjadi anggota.`)) {
-                    fetch('../../functions/delete_mentor.php', {
+                    fetch('../../functions/admin/delete_mentor.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'

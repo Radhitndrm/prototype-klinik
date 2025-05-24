@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else if ($role == 'mentor') {
             header("Location: mentor/index.php");
         } else if ($role == 'admin') {
-            header("Location: dashboard/index.php");
+            header("Location: admin/index.php");
         }
         exit;
     } else {

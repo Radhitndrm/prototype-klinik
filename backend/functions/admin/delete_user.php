@@ -1,5 +1,5 @@
 <?php
-require '../database/connection.php';
+require '../../database/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_user = $_POST['id_user'] ?? '';
@@ -40,6 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 } else {
-    header("Location: ../views/dashboard/users.php?status=error&message=" . urlencode("Metode request tidak valid."));
+    header("Location: ../../views/admin/users.php?status=error&message=" . urlencode("Metode request tidak valid."));
     exit;
 }

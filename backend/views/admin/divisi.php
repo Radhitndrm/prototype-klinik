@@ -140,7 +140,7 @@ try {
     <div id="modal-edit-divisi" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white rounded-lg w-96 p-6 shadow-lg relative">
             <h3 class="text-xl font-semibold text-purple-700 mb-4">Edit Divisi</h3>
-            <form id="form-edit-divisi" method="POST" action="../../functions/update_divisi.php" enctype="multipart/form-data">
+            <form id="form-edit-divisi" method="POST" action="../../functions/admin/update_divisi.php" enctype="multipart/form-data">
                 <input type="hidden" name="id_divisi" id="input-id-divisi" />
                 <input type="hidden" name="gambar_lama" id="input-gambar-lama" />
                 <div class="mb-4">

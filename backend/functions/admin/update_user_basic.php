@@ -1,5 +1,5 @@
 <?php
-require '../database/connection.php';
+require '../../database/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die("Metode request tidak valid.");
@@ -17,7 +17,7 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET nama = ?, email = ? WHERE id_user = ?");
     $stmt->execute([$nama, $email, $id_user]);
 
-    header("Location: ../views/dashboard/users.php?success-user=1");
+    header("Location: ../../views/admin/users.php?success-user=1");
     exit();
 } catch (Exception $e) {
     die("Gagal update data: " . $e->getMessage());

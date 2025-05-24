@@ -1,5 +1,5 @@
 <?php
-require '../database/connection.php';
+require '../../database/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die("Metode request tidak valid.");
@@ -21,7 +21,7 @@ try {
 
     // **Tidak ada kode mentor_divisi di sini**
 
-    header("Location: ../views/dashboard/users.php?success-user=1");
+    header("Location: ../../views/admin/users.php?success-user=1");
     exit();
 } catch (Exception $e) {
     die("Gagal update data: " . $e->getMessage());

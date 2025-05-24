@@ -1,7 +1,7 @@
 <?php
 // update_divisi.php
 
-require '../database/connection.php';
+require '../../database/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_divisi = $_POST['id_divisi'] ?? '';
@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($id_divisi && $nama_divisi && $deskripsi) {
         // Folder upload gambar
-        $uploadDir = __DIR__ . '/../uploads/';
+        $uploadDir = __DIR__ . '/../../uploads/';
 
         // Cek apakah ada file gambar yang diupload
         if (isset($_FILES['gambar_divisi']) && $_FILES['gambar_divisi']['error'] === UPLOAD_ERR_OK) {
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $stmt = $pdo->prepare("UPDATE divisi SET nama_divisi = ?, desc_divisi = ?, gambar_divisi = ? WHERE id_divisi = ?");
                         $stmt->execute([$nama_divisi, $deskripsi, $newFileName, $id_divisi]);
 
-                        header('Location: ../views/dashboard/divisi.php?success=1');
+                        header('Location: ../../views/admin/divisi.php?success=1');
                         exit;
                     } else {
                         die("Gagal memindahkan file gambar.");
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("UPDATE divisi SET nama_divisi = ?, desc_divisi = ? WHERE id_divisi = ?");
             $stmt->execute([$nama_divisi, $deskripsi, $id_divisi]);
 
-            header('Location: ../views/dashboard/divisi.php?success=1');
+            header('Location: ../../views/admin/divisi.php?success=1');
             exit;
         }
     } else {
@@ -77,6 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 } else {
-    header('Location: ../views/dashboard/divisi.php');
+    header('Location: ../../views/admin/divisi.php');
     exit;
 }

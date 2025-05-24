@@ -1,5 +1,5 @@
 <?php
-require '../database/connection.php';
+require '../../database/connection.php';
 
 function generateMentorDivisiId($pdo)
 {
@@ -36,7 +36,7 @@ try {
 
     $pdo->commit();
 
-    header("Location: ../views/dashboard/users.php?success-mentor=1");
+    header("Location: ../../views/admin/users.php?success-mentor=1");
     exit();
 } catch (PDOException $e) {
     $pdo->rollBack();
