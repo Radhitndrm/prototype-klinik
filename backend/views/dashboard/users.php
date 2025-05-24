@@ -137,7 +137,9 @@ try {
                 <?php if (isset($_GET['success-mentor'])): ?>
                     <div class="mb-4 p-3 bg-green-200 text-green-800 rounded">Data mentor berhasil diperbarui.</div>
                 <?php endif; ?>
-
+                <?php if (isset($_GET['success-delete-user'])): ?>
+                    <div class="mb-4 p-3 bg-green-200 text-green-800 rounded">Data User berhasil dihapus.</div>
+                <?php endif; ?>
 
                 <!-- Tabel Anggota -->
                 <section id="anggota" class="mb-10">
@@ -211,7 +213,7 @@ try {
                                                 data-divisi-ids="<?= htmlspecialchars($user['divisi_ids'] ?? '') ?>">
                                                 Edit
                                             </button>
-                                            <button class="delete-user-btn bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded shadow-sm transition-all"
+                                            <button class="delete-mentor-btn bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded shadow-sm transition-all"
                                                 data-id="<?= $user['id_user'] ?>"
                                                 data-nama="<?= htmlspecialchars($user['nama'], ENT_QUOTES) ?>">
                                                 Delete
@@ -228,7 +230,7 @@ try {
                 <div id="modal-edit-user" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
                     <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
                         <h3 class="text-xl font-semibold mb-4">Edit Pengguna</h3>
-                        <form id="edit-user-form" method="post" action="../../functions/update_user.php">
+                        <form id="edit-user-form" method="post" action="../../functions/update_user_basic.php">
                             <input type="hidden" name="id_user" id="edit-user-id_user" />
                             <div class="mb-4">
                                 <label for="edit-user-nama" class="block mb-1 font-semibold">Nama</label>
@@ -240,14 +242,7 @@ try {
                                 <input type="email" id="edit-user-email" name="email" required
                                     class="w-full border border-gray-300 rounded px-3 py-2" />
                             </div>
-                            <div class="mb-4">
-                                <label for="edit-user-role" class="block mb-1 font-semibold">Role</label>
-                                <select id="edit-user-role" name="role" required
-                                    class="w-full border border-gray-300 rounded px-3 py-2">
-                                    <option value="anggota">Anggota</option>
-                                    <option value="mentor">Mentor</option>
-                                </select>
-                            </div>
+
                             <div class="flex justify-end space-x-3">
                                 <button type="button" id="cancel-edit-user"
                                     class="px-4 py-2 rounded border border-gray-400 hover:bg-gray-100 transition">Batal</button>
@@ -262,7 +257,7 @@ try {
                 <div id="modal-add-mentor" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
                     <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
                         <h3 class="text-xl font-semibold mb-4">Tambah Mentor Baru</h3>
-                        <form id="add-mentor-form" method="post" action="add_mentor.php">
+                        <form id="add-mentor-form" method="post" action="../../functions/add_mentor.php">
                             <div class="mb-4">
                                 <label for="add-mentor-id_user" class="block mb-1 font-semibold">Pilih Anggota</label>
                                 <select id="add-mentor-id_user" name="id_user" required
@@ -303,13 +298,13 @@ try {
                             <input type="hidden" name="id_user" id="edit-mentor-id_user" />
                             <div class="mb-4">
                                 <label for="edit-mentor-nama" class="block mb-1 font-semibold">Nama</label>
-                                <input type="text" id="edit-mentor-nama" name="nama" readonly
-                                    class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed" />
+                                <input type="text" id="edit-mentor-nama" name="nama"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100" disabled />
                             </div>
                             <div class="mb-4">
                                 <label for="edit-mentor-email" class="block mb-1 font-semibold">Email</label>
-                                <input type="email" id="edit-mentor-email" name="email" readonly
-                                    class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 cursor-not-allowed" />
+                                <input type="email" id="edit-mentor-email" name="email"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100" disabled />
                             </div>
                             <div class="mb-4">
                                 <label for="edit-mentor-divisi" class="block mb-1 font-semibold">Pilih Divisi</label>
@@ -365,19 +360,12 @@ try {
                 const email = button.dataset.email;
                 const role = button.dataset.role || 'anggota';
 
-                // Jika role mentor, sarankan buka modal edit mentor (divisi)
-                if (role === 'mentor') {
-                    // Cari tombol edit mentor yang sesuai dan trigger klik-nya
-                    // Atau langsung isi modal edit mentor dan buka modal edit mentor
-                    alert('Untuk mengedit mentor, gunakan tombol edit di tabel mentor.');
-                    return;
-                }
 
                 // Isi form modal edit user
                 document.getElementById('edit-user-id_user').value = idUser;
                 document.getElementById('edit-user-nama').value = nama;
                 document.getElementById('edit-user-email').value = email;
-                document.getElementById('edit-user-role').value = role;
+                // document.getElementById('edit-user-role').value = role;
 
                 modalEditUser.classList.remove('hidden');
             });
@@ -418,16 +406,36 @@ try {
                 modalEditMentor.classList.remove('hidden');
             });
         });
-
         // Tombol delete user (konfirmasi)
         document.querySelectorAll('.delete-user-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const idUser = button.dataset.id;
                 const nama = button.dataset.nama;
-                if (confirm(`Yakin ingin menghapus pengguna "${nama}"? Tindakan ini tidak dapat dibatalkan.`)) {
-                    // Kirim request delete ke delete_user.php via POST (bisa pakai form tersembunyi)
-                    // Contoh sederhana:
-                    fetch('delete_user.php', {
+                if (confirm(`Yakin ingin menghapus pengguna "${nama}"?`)) {
+                    fetch('../../functions/delete_user.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: `id_user=${encodeURIComponent(idUser)}`
+                        })
+                        .then(res => res.text())
+                        .then(data => {
+                            alert(data);
+                            location.reload();
+                        })
+                        .catch(err => alert('Terjadi kesalahan: ' + err));
+                }
+            });
+        });
+
+        // Tombol delete mentor (konfirmasi)
+        document.querySelectorAll('.delete-mentor-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const idUser = button.dataset.id;
+                const nama = button.dataset.nama;
+                if (confirm(`Yakin ingin menghapus mentor "${nama}"? Role akan diubah menjadi anggota.`)) {
+                    fetch('../../functions/delete_mentor.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'

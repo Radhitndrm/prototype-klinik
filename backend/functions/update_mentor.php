@@ -8,34 +8,37 @@ function generateMentorDivisiId($pdo)
     return 'MDV-' . str_pad($num, 3, '0', STR_PAD_LEFT);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_user = $_POST['id_user'] ?? null;
-    $divisi_ids = $_POST['divisi_ids'] ?? [];
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    die("Request tidak valid.");
+}
 
-    if (!$id_user || !is_array($divisi_ids)) {
-        echo "Data tidak lengkap.";
-        exit;
+$id_user = $_POST['id_user'] ?? null;
+$divisi_ids = $_POST['divisi_ids'] ?? [];
+
+if (!$id_user || !is_array($divisi_ids)) {
+    die("Data tidak lengkap.");
+}
+
+try {
+    $pdo->beginTransaction();
+
+    // Hapus relasi lama
+    $stmtDelete = $pdo->prepare("DELETE FROM mentor_divisi WHERE id_user = ?");
+    $stmtDelete->execute([$id_user]);
+
+    // Insert relasi baru dengan id_mentor_divisi generated
+    $stmtInsert = $pdo->prepare("INSERT INTO mentor_divisi (id_mentor_divisi, id_user, id_divisi) VALUES (?, ?, ?)");
+
+    foreach ($divisi_ids as $id_divisi) {
+        $newId = generateMentorDivisiId($pdo);
+        $stmtInsert->execute([$newId, $id_user, $id_divisi]);
     }
 
-    try {
-        // Hapus relasi lama
-        $stmtDelete = $pdo->prepare("DELETE FROM mentor_divisi WHERE id_user = ?");
-        $stmtDelete->execute([$id_user]);
+    $pdo->commit();
 
-        // Insert relasi baru dengan id_mentor_divisi generated
-        $stmtInsert = $pdo->prepare("INSERT INTO mentor_divisi (id_mentor_divisi, id_user, id_divisi) VALUES (?, ?, ?)");
-
-        foreach ($divisi_ids as $id_divisi) {
-            $newId = generateMentorDivisiId($pdo);
-            $stmtInsert->execute([$newId, $id_user, $id_divisi]);
-        }
-
-        // Redirect jika berhasil
-        header("Location: ../views/dashboard/users.php?success-mentor=1");
-        exit;
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
-} else {
-    echo "Request tidak valid.";
+    header("Location: ../views/dashboard/users.php?success-mentor=1");
+    exit();
+} catch (PDOException $e) {
+    $pdo->rollBack();
+    die("Gagal update mentor: " . $e->getMessage());
 }

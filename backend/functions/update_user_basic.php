@@ -8,18 +8,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $id_user = $_POST['id_user'] ?? null;
 $nama = $_POST['nama'] ?? null;
 $email = $_POST['email'] ?? null;
-$role = $_POST['role'] ?? null;
 
-if (!$id_user || !$nama || !$email || !$role) {
+if (!$id_user || !$nama || !$email) {
     die("Data tidak lengkap.");
 }
 
 try {
-    // Update users (nama, email, role)
-    $stmt = $pdo->prepare("UPDATE users SET nama = ?, email = ?, role = ? WHERE id_user = ?");
-    $stmt->execute([$nama, $email, $role, $id_user]);
-
-    // **Tidak ada kode mentor_divisi di sini**
+    $stmt = $pdo->prepare("UPDATE users SET nama = ?, email = ? WHERE id_user = ?");
+    $stmt->execute([$nama, $email, $id_user]);
 
     header("Location: ../views/dashboard/users.php?success-user=1");
     exit();
