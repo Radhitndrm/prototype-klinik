@@ -1,7 +1,13 @@
 <?php
-// users.php
 
-require '../../database/connection.php'; // sudah ada $pdo
+session_start();
+require '../../database/connection.php';
+
+
+if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login_page.php");
+    exit();
+}
 
 try {
     // Ambil data anggota dan mentor (role = 'anggota', 'mentor')
@@ -58,7 +64,7 @@ try {
                 <div class="px-6 py-8">
                     <h1 class="text-3xl font-bold text-gray-200 mb-10">Klinik Prodi</h1>
                     <nav class="flex flex-col space-y-3 text-gray-300">
-                        <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-700 hover:text-white transition">
+                        <a href="index.php" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-purple-700 hover:text-white transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                                 <path d="M3 12l2-2 4 4 8-8 2 2v6H3z" />
@@ -106,7 +112,10 @@ try {
             </div>
             <div class="px-6 py-4 border-t border-gray-700">
                 <button
-                    class="w-full px-4 py-2 rounded bg-purple-600 text-white font-semibold hover:bg-purple-700 transition">Logout</button>
+                    class="w-full px-4 py-2 rounded bg-purple-600 text-white font-semibold hover:bg-purple-700 transition"><a href="../../functions/logout.php"
+                        class="block text-center w-full px-4 py-2 rounded bg-purple-600 text-white font-semibold hover:bg-purple-700 transition">
+                        Logout
+                    </a></button>
             </div>
         </aside>
 

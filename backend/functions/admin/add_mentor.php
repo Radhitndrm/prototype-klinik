@@ -26,9 +26,9 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET role = 'mentor' WHERE id_user = ?");
     $stmt->execute([$id_user]);
 
-    // Hapus dulu relasi mentor_divisi lama kalau ada
-    $delete = $pdo->prepare("DELETE FROM mentor_divisi WHERE id_user = ?");
-    $delete->execute([$id_user]);
+    // // Hapus dulu relasi mentor_divisi lama kalau ada
+    // $delete = $pdo->prepare("DELETE FROM mentor_divisi WHERE id_user = ?");
+    // $delete->execute([$id_user]);
 
     // Insert relasi baru untuk tiap divisi yang dipilih
     $insert = $pdo->prepare("INSERT INTO mentor_divisi (id_mentor_divisi, id_user, id_divisi) VALUES (?, ?, ?)");

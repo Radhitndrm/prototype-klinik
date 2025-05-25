@@ -26,18 +26,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $allowedfileExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
             if (in_array($fileExtension, $allowedfileExtensions)) {
-                // Batas max file size (misal 2MB)
+                // Batas max file size (2MB)
                 $maxFileSize = 2 * 1024 * 1024;
                 if ($fileSize <= $maxFileSize) {
-                    // Generate nama file unik untuk mencegah overwrite
+                    // Generate nama file unik
                     $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
 
                     // Pindahkan file ke folder uploads
                     $destPath = $uploadDir . $newFileName;
                     if (move_uploaded_file($fileTmpPath, $destPath)) {
-                        // Hapus gambar lama jika ada dan bukan kosong
-                        if ($gambar_lama && file_exists($uploadDir . $gambar_lama)) {
-                            unlink($uploadDir . $gambar_lama);
+
+                        // Hapus gambar lama jika ada dan aman
+                        if (
+                            $gambar_lama &&
+                            strpos($gambar_lama, '..') === false &&
+                            file_exists($uploadDir . $gambar_lama)
+                        ) {
+                            if (!unlink($uploadDir . $gambar_lama)) {
+                                error_log("Gagal menghapus file: " . $uploadDir . $gambar_lama);
+                            }
                         }
 
                         // Update data termasuk gambar baru
@@ -56,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 die("Format file tidak didukung. Hanya jpg, jpeg, png, gif, dan webp.");
             }
         } else {
-            // Jika tidak upload gambar baru, update tanpa mengubah gambar
+            // Tidak upload gambar baru, update tanpa ubah gambar
             $stmt = $pdo->prepare("UPDATE divisi SET nama_divisi = ?, desc_divisi = ? WHERE id_divisi = ?");
             $stmt->execute([$nama_divisi, $deskripsi, $id_divisi]);
 
@@ -64,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
     } else {
+        // Data tidak lengkap
         echo "<h3>Data tidak lengkap. Berikut data yang diterima:</h3>";
         echo "<pre>";
         var_dump([
@@ -77,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 } else {
+    // Akses langsung tidak diizinkan
     header('Location: ../../views/admin/divisi.php');
     exit;
 }

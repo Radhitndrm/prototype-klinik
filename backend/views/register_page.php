@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo $result;
         exit;
     } else {
+        header('Location: register_page.php?register-failed=1');
         $server = $result;
     }
 }
@@ -33,7 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="bg-white p-8 rounded-xl shadow-lg text-center animate-fade-in">
             <h2 class="text-[#7b2cbf] text-2xl font-semibold mb-2">Register</h2>
             <p class="text-[#555] mb-5">Buat akun baru untuk login ke sistem</p>
-
+            <?php if (isset($_GET['register-failed'])): ?>
+                <div class="mb-4 p-3 bg-red-200 text-red-800 rounded">Login gagal.</div>
+            <?php endif; ?>
             <?php if (isset($error)) echo "<p class='text-red-500 mb-4'>$error</p>"; ?>
 
             <form method="POST" class="space-y-4 text-left">

@@ -1,7 +1,12 @@
 <?php
-
-
+session_start();
 require '../../database/connection.php';
+
+
+if (!isset($_SESSION['id_user']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login_page.php");
+    exit();
+}
 
 // Total pengguna
 try {
@@ -66,7 +71,6 @@ try {
     <div class="flex min-h-screen">
 
         <!-- Sidebar -->
-        <!-- Sidebar -->
         <aside
             class="w-64 bg-gray-800 fixed inset-y-0 left-0 flex flex-col justify-between border-r border-gray-700 shadow-lg">
             <div>
@@ -121,7 +125,10 @@ try {
             </div>
             <div class="px-6 py-4 border-t border-gray-700">
                 <button
-                    class="w-full px-4 py-2 rounded bg-purple-600 text-white font-semibold hover:bg-purple-700 transition">Logout</button>
+                    class="w-full px-4 py-2 rounded bg-purple-600 text-white font-semibold hover:bg-purple-700 transition"><a href="../../functions/logout.php"
+                        class="block text-center w-full px-4 py-2 rounded bg-purple-600 text-white font-semibold hover:bg-purple-700 transition">
+                        Logout
+                    </a></button>
             </div>
         </aside>
 

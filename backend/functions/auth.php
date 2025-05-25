@@ -29,9 +29,10 @@ function cekLogin()
 function register($name, $email, $password, $confirmPassword)
 {
     global $pdo;
-
+    //mengecek apakah email yang di regist sudah terdaftar apa belum
     $stmt = $pdo->prepare("SELECT * FROM  users WHERE email = ?");
     $stmt->execute([$email]);
+    // email suddah terdaftar maka user baru harus pakai email
     if ($stmt->rowCount() > 0) {
         return "Email sudah terdaftar!";
     }
@@ -51,6 +52,8 @@ function register($name, $email, $password, $confirmPassword)
 }
 
 function generateUserId()
+# fungsi yang membuat tag id
+#contoh id 8 -> USR-008
 {
     global $pdo;
     $stmt = $pdo->query("SELECT id_user FROM users ORDER BY id_user DESC LIMIT 1");
