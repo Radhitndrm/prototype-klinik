@@ -15,7 +15,7 @@ function updateMateri($pdo, $id_materi, $judul, $divisi_id, $file)
 
     if ($file && $file['error'] !== 4) { // hanya jika ada file baru
         $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'mp4', 'mov', 'avi', 'mkv'];
+        $allowed = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'mp4', 'mov', 'avi', 'mkv', 'png', 'jpeg', 'jpg'];
 
         if (!in_array($ext, $allowed)) {
             throw new Exception("Ekstensi file tidak valid.");

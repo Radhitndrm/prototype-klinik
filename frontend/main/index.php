@@ -3,18 +3,32 @@ session_start();
 require '../../backend/database/connection.php';
 require '../../backend/functions/mentor/fetch.php';
 
-$user_id = $_SESSION['user']['id_user'] ?? null;
-$role = $_SESSION['user']['role'] ?? null;
-$nama = 'Guest';
+// Ambil id_user dari session, pastikan ada
+$id_user = $_SESSION['id_user'] ?? null;
+$role = $_SESSION['role'] ?? null;  // sesuaikan key session-nya, kalau memang 'role'
+$nama = $_SESSION['nama'] ?? null;
 
-if ($user_id) {
-    $nama = fetchColumnById($pdo, "SELECT nama FROM users WHERE id_user = ?", $user_id);
+if ($id_user) {
+    // Jika nama belum ada di session, ambil dari database
     if (!$nama) {
-        $nama = 'User';
+        $nama = fetchColumnById($pdo, "SELECT nama FROM users WHERE id_user = ?", $id_user);
+        if (!$nama) {
+            $nama = 'User';
+        }
     }
+
+    if (!$role) {
+        $role = fetchColumnById($pdo, "SELECT role FROM users WHERE id_user = ?", $id_user);
+        if (!$role) {
+            $role = 'user';
+        }
+    }
+} else {
+    // Jika id_user tidak ada di session, beri nilai default
+    $nama = 'Guest';
+    $role = null;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -87,44 +101,47 @@ if ($user_id) {
 
         <nav
             class="flex justify-between items-center p-5 bg-white/80 backdrop-blur-sm rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)] mb-10 sticky top-5 z-50 mx-auto max-w-screen-xl">
-            <!-- Logo di kiri -->
+            <!-- Logo kiri -->
             <div>
                 <img src="images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-md shadow-indigo-500/50 max-w-[200px]" />
             </div>
 
-            <!-- Menu navigasi di tengah (atau bisa di kiri logo jika diinginkan) -->
-            <ul class="hidden md:flex gap-8 list-none">
-                <li><a href="#" class="text-gray-800 font-medium hover:text-purple-600 transition">Beranda</a></li>
-                <li><a href="#visi-misi" class="text-gray-800 font-medium hover:text-purple-600 transition">Visi & Misi</a></li>
-                <li><a href="#divisi" class="text-gray-800 font-medium hover:text-purple-600 transition">Divisi</a></li>
-                <li><a href="#kontak" class="text-gray-800 font-medium hover:text-purple-600 transition">Kontak</a></li>
-            </ul>
+            <!-- Semua menu + dropdown di kanan -->
+            <div class="flex items-center gap-8">
 
-            <!-- Dropdown nama user di kanan -->
-            <div class="relative">
-                <button id="userBtn" class="text-gray-800 font-medium hover:text-purple-600 transition focus:outline-none flex items-center gap-1">
-                    <?= htmlspecialchars($nama) ?>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-
-                <ul id="dropdownMenu"
-                    class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 z-50">
-                    <?php if ($role === 'admin'): ?>
-                        <li><a href="/admin/dashboard.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Kembali ke Dashboard Admin</a></li>
-                    <?php elseif ($role === 'mentor'): ?>
-                        <li><a href="/mentor/dashboard.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Kembali ke Dashboard Mentor</a></li>
-                    <?php elseif ($role === 'user'): ?>
-                        <li><a href="/logout.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Logout</a></li>
-                    <?php else: ?>
-                        <li><a href="/login.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Login</a></li>
-                    <?php endif; ?>
+                <ul class="hidden md:flex gap-8 list-none">
+                    <li><a href="#" class="text-gray-800 font-medium hover:text-purple-600 transition">Beranda</a></li>
+                    <li><a href="#visi-misi" class="text-gray-800 font-medium hover:text-purple-600 transition">Visi & Misi</a></li>
+                    <li><a href="#divisi" class="text-gray-800 font-medium hover:text-purple-600 transition">Divisi</a></li>
+                    <li><a href="#kontak" class="text-gray-800 font-medium hover:text-purple-600 transition">Kontak</a></li>
                 </ul>
+
+                <!-- Dropdown user -->
+                <div class="relative">
+                    <button id="userBtn" class="text-gray-800 font-medium hover:text-purple-600 transition focus:outline-none flex items-center gap-1">
+                        <?= htmlspecialchars($nama) ?>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+
+                    <ul id="dropdownMenu"
+                        class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+                        <?php if ($role === 'admin'): ?>
+                            <li><a href="/admin/dashboard.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Kembali ke Dashboard Admin</a></li>
+                        <?php elseif ($role === 'mentor'): ?>
+                            <li><a href="/mentor/dashboard.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Kembali ke Dashboard Mentor</a></li>
+                        <?php elseif ($role === 'user'): ?>
+                            <li><a href="/logout.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Logout</a></li>
+                        <?php else: ?>
+                            <li><a href="../../backend/views/login_page.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Login</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+
             </div>
         </nav>
-
         <!-- Hero Section -->
         <header id="home"
             class="text-center p-20 rounded-3xl mb-12 shadow-lg bg-gradient-to-br from-[#e0f4ff] to-[#f3e8ff] fade-in fade-delay-1">
@@ -135,7 +152,7 @@ if ($user_id) {
                 Komunitas belajar interaktif untuk semua mahasiswa fakultas Teknologi & Sains!
             </p>
             <div class="flex flex-wrap justify-center gap-5 max-w-[900px] mx-auto">
-                <a href="../Full-Stack/index.html" class="flex-1 min-w-[250px] max-w-[300px]">
+                <a href="../Full-Stack/index.php" class="flex-1 min-w-[250px] max-w-[300px]">
                     <button
                         class="w-full px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-purple-700 to-indigo-600 text-white shadow-md hover:from-purple-800 hover:to-indigo-700 transform hover:-translate-y-1 transition whitespace-nowrap">
                         Masuk Divisi Fullstack

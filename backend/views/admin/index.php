@@ -42,18 +42,7 @@ try {
 }
 
 // 5 komentar terbaru
-try {
-    $komentar_terbaru = $pdo->query("
-        SELECT u.nama, k.isi_komentar, kd.judul, k.tanggal_komentar
-        FROM komentar k
-        JOIN users u ON k.id_user = u.id_user
-        JOIN konten_divisi kd ON k.id_konten = kd.id_konten
-        ORDER BY k.tanggal_komentar DESC
-        LIMIT 5
-    ")->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Query komentar gagal: " . $e->getMessage());
-}
+
 ?>
 
 <!DOCTYPE html>

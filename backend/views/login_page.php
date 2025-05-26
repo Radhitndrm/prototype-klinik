@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $role = login($_POST['email'], $_POST['password']);
     if ($role) {
         if ($role == 'anggota') {
-            header("Location: ../../frontend/main/index.html");
+            header("Location: ../../frontend/main/index.php");
         } else if ($role == 'mentor') {
             header("Location: mentor/index.php");
         } else if ($role == 'admin') {

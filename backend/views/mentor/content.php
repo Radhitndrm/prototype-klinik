@@ -13,7 +13,7 @@ if (!isset($_SESSION['id_user']) || !isset($_SESSION['divisi_mentor'])) {
 }
 
 // Fungsi hapus konten beserta file gambar terkait
-function deleteKonten(PDO $pdo, string $id_konten, string $uploadDir = '../../uploads/')
+function deleteKonten(PDO $pdo, string $id_konten, string $uploadDir = '../../uploads/konten/')
 {
     $stmt = $pdo->prepare("SELECT gambar_url FROM konten_divisi WHERE id_konten = ?");
     $stmt->execute([$id_konten]);
@@ -50,8 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($id_konten) {
+            // Update konten dengan mentor_id
             updateKonten($pdo, $id_konten, $judul, $divisi_id, $id_user, $gambar);
         } else {
+            // Tambah konten dengan mentor_id
             addKonten($pdo, $judul, $divisi_id, $id_user, $gambar);
         }
         header("Location: content.php");
@@ -69,7 +71,7 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
-// Ambil konten
+// Ambil konten milik mentor sesuai divisi dan mentor_id
 $stmt = $pdo->prepare("
     SELECT kd.*, d.nama_divisi 
     FROM konten_divisi kd
@@ -162,126 +164,85 @@ $kontenList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div>
                         <label class="block font-medium mb-1">Upload Gambar/Video (opsional)</label>
-                        <input name="gambar_url" type="file" accept="image/*,video/*" class="w-full border rounded-md px-3 py-2" />
+                        <input name="gambar_url" type="file" accept="image/*,video/*" class="w-full" />
                     </div>
-                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded">Tambah Konten</button>
+                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded">Simpan</button>
                 </form>
             </div>
         </div>
 
-        <!-- Modal Update -->
-        <div id="updateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-            <div class="bg-white rounded-lg shadow-lg w-full max-w-lg p-6 relative">
-                <button id="closeUpdateModalBtn" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
-                <h3 class="text-xl font-semibold mb-4">Edit Konten</h3>
-                <form method="POST" enctype="multipart/form-data" class="space-y-5">
-                    <input type="hidden" name="id_konten" value="">
-                    <div>
-                        <label class="block font-medium mb-1">Judul Konten</label>
-                        <input name="judul" type="text" required class="w-full border rounded-md px-3 py-2" />
-                    </div>
-                    <div>
-                        <label class="block font-medium mb-1">Divisi</label>
-                        <input type="text" value="<?= htmlspecialchars($divisi_mentor_nama) ?>" disabled class="w-full border rounded-md px-3 py-2 bg-gray-100 text-gray-600" />
-                    </div>
-                    <div>
-                        <label class="block font-medium mb-1">Upload Gambar/Video (biarkan kosong jika tidak ingin ganti)</label>
-                        <input name="gambar_url" type="file" accept="image/*,video/*" class="w-full border rounded-md px-3 py-2" />
-                    </div>
-                    <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded">Update Konten</button>
-                </form>
-            </div>
-        </div>
-
-        <table class="w-full border-collapse table-auto text-sm border border-gray-300 rounded-md">
-            <thead class="bg-purple-600 text-white">
-                <tr>
-                    <th class="px-4 py-2 border border-purple-700">No</th>
-                    <th class="px-4 py-2 border border-purple-700">Judul Konten</th>
-                    <th class="px-4 py-2 border border-purple-700">Gambar/Video</th>
-                    <th class="px-4 py-2 border border-purple-700">Tanggal Upload</th>
-                    <th class="px-4 py-2 border border-purple-700">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (count($kontenList) === 0) : ?>
+        <!-- Table -->
+        <div class="overflow-x-auto shadow rounded-lg border border-gray-300">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-purple-100">
                     <tr>
-                        <td colspan="5" class="text-center py-4 text-gray-500">Belum ada konten.</td>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">#</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Judul</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Divisi</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Tanggal Upload</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Aksi</th>
                     </tr>
-                <?php else: ?>
-                    <?php foreach ($kontenList as $i => $konten) : ?>
-                        <tr class="<?= $i % 2 === 0 ? 'bg-gray-50' : 'bg-white' ?>">
-                            <td class="px-4 py-2 border border-gray-300 text-center"><?= $i + 1 ?></td>
-                            <td class="px-4 py-2 border border-gray-300"><?= htmlspecialchars($konten['judul']) ?></td>
-                            <td class="px-4 py-2 border border-gray-300">
-                                <?php if ($konten['gambar_url']) : ?>
-                                    <?php
-                                    $ext = pathinfo($konten['gambar_url'], PATHINFO_EXTENSION);
-                                    if (in_array(strtolower($ext), ['mp4', 'webm', 'ogg'])) :
-                                    ?>
-                                        <video width="160" controls>
-                                            <source src="../../backend/uploads/konten/<?= htmlspecialchars($konten['gambar_url']) ?>" type="video/<?= $ext ?>">
-                                            Browser anda tidak mendukung video.
-                                        </video>
-                                    <?php else: ?>
-                                        <img src="../../uploads/konten/<?= htmlspecialchars($konten['gambar_url']) ?>" alt="Gambar Konten" class="max-w-[160px] max-h-24 object-cover rounded" />
-                                    <?php endif; ?>
-                                <?php else: ?>
-                                    <span class="text-gray-400 italic">Tidak ada file</span>
-                                <?php endif; ?>
-                            </td>
-                            <td class="px-4 py-2 border border-gray-300 text-center"><?= date('d M Y', strtotime($konten['tanggal_upload'])) ?></td>
-                            <td class="px-4 py-2 border border-gray-300 text-center space-x-1">
-                                <button
-                                    class="editBtn bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded text-sm font-semibold"
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <?php foreach ($kontenList as $index => $konten): ?>
+                        <tr>
+                            <td class="px-6 py-4"><?= $index + 1 ?></td>
+                            <td class="px-6 py-4"><?= htmlspecialchars($konten['judul']) ?></td>
+                            <td class="px-6 py-4"><?= htmlspecialchars($konten['nama_divisi']) ?></td>
+                            <td class="px-6 py-4"><?= htmlspecialchars($konten['tanggal_upload']) ?></td>
+                            <td class="px-6 py-4 space-x-3">
+                                <button class="editBtn bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded"
                                     data-id="<?= $konten['id_konten'] ?>"
-                                    data-judul="<?= htmlspecialchars($konten['judul']) ?>">
-                                    Edit
-                                </button>
-                                <a href="?delete=<?= $konten['id_konten'] ?>" onclick="return confirm('Yakin ingin menghapus konten ini?')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm font-semibold">Hapus</a>
+                                    data-judul="<?= htmlspecialchars($konten['judul'], ENT_QUOTES) ?>">Edit</button>
+                                <a href="?delete=<?= $konten['id_konten'] ?>"
+                                    onclick="return confirm('Yakin ingin hapus konten ini?')"
+                                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Hapus</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                    <?php if (empty($kontenList)): ?>
+                        <tr>
+                            <td colspan="5" class="text-center py-6 text-gray-500">Belum ada konten.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </main>
 
     <script>
+        // Modal handling
         const createModal = document.getElementById('createModal');
-        const updateModal = document.getElementById('updateModal');
+        const openCreateBtn = document.getElementById('openCreateModalBtn');
+        const closeCreateBtn = document.getElementById('closeCreateModalBtn');
+        const form = createModal.querySelector('form');
+        const idInput = form.querySelector('input[name="id_konten"]');
+        const judulInput = form.querySelector('input[name="judul"]');
 
-        document.getElementById('openCreateModalBtn').onclick = () => {
+        openCreateBtn.addEventListener('click', () => {
+            idInput.value = '';
+            judulInput.value = '';
             createModal.classList.remove('hidden');
-        };
-        document.getElementById('closeCreateModalBtn').onclick = () => {
+        });
+
+        closeCreateBtn.addEventListener('click', () => {
             createModal.classList.add('hidden');
-        };
-        document.getElementById('closeUpdateModalBtn').onclick = () => {
-            updateModal.classList.add('hidden');
-        };
+        });
 
-        // Edit button click: isi form modal update dan tampilkan modal
-        document.querySelectorAll('.editBtn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const id = btn.dataset.id;
-                const judul = btn.dataset.judul;
-
-                const form = updateModal.querySelector('form');
-                form.id_konten.value = id;
-                form.judul.value = judul;
-
-                updateModal.classList.remove('hidden');
+        // Edit button
+        document.querySelectorAll('.editBtn').forEach(button => {
+            button.addEventListener('click', () => {
+                idInput.value = button.dataset.id;
+                judulInput.value = button.dataset.judul;
+                createModal.classList.remove('hidden');
             });
         });
 
-        // Klik di luar modal untuk menutup modal (optional)
-        [createModal, updateModal].forEach(modal => {
-            modal.addEventListener('click', e => {
-                if (e.target === modal) {
-                    modal.classList.add('hidden');
-                }
-            });
+        // Tutup modal kalau klik di luar modal konten
+        createModal.addEventListener('click', (e) => {
+            if (e.target === createModal) {
+                createModal.classList.add('hidden');
+            }
         });
     </script>
 </body>

@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($id_materi) {
             updateMateri($pdo, $id_materi, $judul, $divisi_id, $file);
         } else {
-            createMateri($pdo, $judul, $divisi_id, $file);
+            createMateri($pdo, $judul, $divisi_id, $file, $id_user);
         }
         header("Location: materi.php");
         exit;
@@ -215,7 +215,7 @@ $materiList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="border px-4 py-2 text-left">Judul</th>
-                        <th class="border px-4 py-2 text-left">Divisi</th>
+                        <th class="border px-4 py-2 text-left">Gambar</th>
                         <th class="border px-4 py-2 text-left">Tanggal Upload</th>
                         <th class="border px-4 py-2 text-center">Aksi</th>
                     </tr>
@@ -224,7 +224,9 @@ $materiList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php foreach ($materiList as $materi): ?>
                         <tr class="hover:bg-purple-50">
                             <td class="border px-4 py-2"><?= htmlspecialchars($materi['judul']) ?></td>
-                            <td class="border px-4 py-2"><?= htmlspecialchars($materi['nama_divisi']) ?></td>
+                            <td class="border px-4 py-2">
+                                <img src="../../uploads/materi/<?= htmlspecialchars($materi['file_url']) ?>" alt="Gambar Konten" class="max-w-[160px] max-h-24 object-cover rounded" />
+                            </td>
                             <td class="border px-4 py-2"><?= htmlspecialchars($materi['tanggal_upload']) ?></td>
                             <td class="border px-4 py-2 text-center space-x-2">
                                 <a href="#" class="editBtn text-blue-600 hover:text-blue-800 font-semibold"
