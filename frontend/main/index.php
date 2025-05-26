@@ -1,3 +1,20 @@
+<?php
+session_start();
+require '../../backend/database/connection.php';
+require '../../backend/functions/mentor/fetch.php';
+
+$user_id = $_SESSION['user']['id_user'] ?? null;
+$role = $_SESSION['user']['role'] ?? null;
+$nama = 'Guest';
+
+if ($user_id) {
+    $nama = fetchColumnById($pdo, "SELECT nama FROM users WHERE id_user = ?", $user_id);
+    if (!$nama) {
+        $nama = 'User';
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -67,16 +84,45 @@
     <div class="max-w-[1200px] mx-auto p-5">
 
         <!-- Navbar -->
+
         <nav
-            class="flex justify-between items-center p-5 bg-white/80 backdrop-blur-sm rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)] mb-10 sticky top-5 z-50 mx-auto">
-            <img src="images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-md shadow-indigo-500/50 max-w-[200px]" />
+            class="flex justify-between items-center p-5 bg-white/80 backdrop-blur-sm rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)] mb-10 sticky top-5 z-50 mx-auto max-w-screen-xl">
+            <!-- Logo di kiri -->
+            <div>
+                <img src="images/logo.png" alt="Logo Klinik" class="rounded-2xl shadow-md shadow-indigo-500/50 max-w-[200px]" />
+            </div>
+
+            <!-- Menu navigasi di tengah (atau bisa di kiri logo jika diinginkan) -->
             <ul class="hidden md:flex gap-8 list-none">
                 <li><a href="#" class="text-gray-800 font-medium hover:text-purple-600 transition">Beranda</a></li>
-                <li><a href="#visi-misi" class="text-gray-800 font-medium hover:text-purple-600 transition">Visi &
-                        Misi</a></li>
+                <li><a href="#visi-misi" class="text-gray-800 font-medium hover:text-purple-600 transition">Visi & Misi</a></li>
                 <li><a href="#divisi" class="text-gray-800 font-medium hover:text-purple-600 transition">Divisi</a></li>
                 <li><a href="#kontak" class="text-gray-800 font-medium hover:text-purple-600 transition">Kontak</a></li>
             </ul>
+
+            <!-- Dropdown nama user di kanan -->
+            <div class="relative">
+                <button id="userBtn" class="text-gray-800 font-medium hover:text-purple-600 transition focus:outline-none flex items-center gap-1">
+                    <?= htmlspecialchars($nama) ?>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <ul id="dropdownMenu"
+                    class="hidden absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+                    <?php if ($role === 'admin'): ?>
+                        <li><a href="/admin/dashboard.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Kembali ke Dashboard Admin</a></li>
+                    <?php elseif ($role === 'mentor'): ?>
+                        <li><a href="/mentor/dashboard.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Kembali ke Dashboard Mentor</a></li>
+                    <?php elseif ($role === 'user'): ?>
+                        <li><a href="/logout.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Logout</a></li>
+                    <?php else: ?>
+                        <li><a href="/login.php" class="block px-4 py-2 text-gray-800 hover:bg-purple-100">Login</a></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
         </nav>
 
         <!-- Hero Section -->
@@ -357,6 +403,21 @@
         &copy; 2025 Klinik Prodi - Technology Medical Center. All Rights Reserved.
     </footer>
     </div>
+
+    <script>
+        document.getElementById('userBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', function() {
+            const menu = document.getElementById('dropdownMenu');
+            if (!menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 
 </html>

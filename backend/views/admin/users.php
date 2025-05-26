@@ -281,8 +281,8 @@ try {
                             </div>
                             <div class="mb-4">
                                 <label for="add-mentor-divisi" class="block mb-1 font-semibold">Pilih Divisi</label>
-                                <select id="add-mentor-divisi" name="divisi_ids[]" multiple required
-                                    class="w-full border border-gray-300 rounded px-3 py-2 h-32 overflow-y-auto">
+                                <select id="add-mentor-divisi" name="divisi_id" required
+                                    class="w-full border border-gray-300 rounded px-3 py-2">
                                     <?php foreach ($all_divisi as $div): ?>
                                         <option value="<?= $div['id_divisi'] ?>"><?= htmlspecialchars($div['nama_divisi']) ?></option>
                                     <?php endforeach; ?>
@@ -317,8 +317,8 @@ try {
                             </div>
                             <div class="mb-4">
                                 <label for="edit-mentor-divisi" class="block mb-1 font-semibold">Pilih Divisi</label>
-                                <select id="edit-mentor-divisi" name="divisi_ids[]" multiple required
-                                    class="w-full border border-gray-300 rounded px-3 py-2 h-32 overflow-y-auto">
+                                <select id="edit-mentor-divisi" name="divisi_id" required
+                                    class="w-full border border-gray-300 rounded px-3 py-2">
                                     <?php foreach ($all_divisi as $div): ?>
                                         <option value="<?= $div['id_divisi'] ?>"><?= htmlspecialchars($div['nama_divisi']) ?></option>
                                     <?php endforeach; ?>
@@ -405,11 +405,9 @@ try {
 
                 // Pilih sesuai divisi_ids
                 if (divisiIds.length > 0) {
-                    const arrDivisi = divisiIds.split(',');
-                    arrDivisi.forEach(id => {
-                        const opt = selectDivisi.querySelector(`option[value="${id}"]`);
-                        if (opt) opt.selected = true;
-                    });
+                    const firstDivisiId = divisiIds.split(',')[0]; // ambil divisi pertama
+                    const opt = selectDivisi.querySelector(`option[value="${firstDivisiId}"]`);
+                    if (opt) opt.selected = true;
                 }
 
                 modalEditMentor.classList.remove('hidden');

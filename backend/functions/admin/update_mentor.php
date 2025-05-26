@@ -13,26 +13,27 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $id_user = $_POST['id_user'] ?? null;
-$divisi_ids = $_POST['divisi_ids'] ?? [];
+$id_divisi = $_POST['divisi_id'] ?? null;  // divisi_id sebagai string, bukan array
 
-if (!$id_user || !is_array($divisi_ids)) {
+if (!$id_user || !$id_divisi) {
     die("Data tidak lengkap.");
 }
+
+// Karena divisi_id bukan array, tidak perlu count
+// Namun jika kamu ingin validasi tambahan, bisa cek apakah id_divisi valid
+// Misal cek format id_divisi atau cek di database apakah id_divisi ada
 
 try {
     $pdo->beginTransaction();
 
-    // Hapus relasi lama
+    // Hapus relasi lama mentor
     $stmtDelete = $pdo->prepare("DELETE FROM mentor_divisi WHERE id_user = ?");
     $stmtDelete->execute([$id_user]);
 
-    // Insert relasi baru dengan id_mentor_divisi generated
+    // Insert relasi baru
     $stmtInsert = $pdo->prepare("INSERT INTO mentor_divisi (id_mentor_divisi, id_user, id_divisi) VALUES (?, ?, ?)");
-
-    foreach ($divisi_ids as $id_divisi) {
-        $newId = generateMentorDivisiId($pdo);
-        $stmtInsert->execute([$newId, $id_user, $id_divisi]);
-    }
+    $newId = generateMentorDivisiId($pdo);
+    $stmtInsert->execute([$newId, $id_user, $id_divisi]);
 
     $pdo->commit();
 

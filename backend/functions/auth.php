@@ -1,6 +1,11 @@
 <?php
+
 require '../database/connection.php';
 
+/**
+ * Fungsi untuk login
+ * Mengembalikan role user jika berhasil login, false jika gagal
+ */
 function login($email, $password)
 {
     global $pdo;
@@ -9,15 +14,37 @@ function login($email, $password)
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
+        // Set session umum
         $_SESSION['id_user'] = $user['id_user'];
         $_SESSION['nama'] = $user['nama'];
         $_SESSION['role'] = $user['role'];
+
+        // Jika user adalah mentor, ambil nama divisinya langsung
+        if ($user['role'] === 'mentor') {
+            $stmtDivisi = $pdo->prepare("
+                SELECT d.nama_divisi 
+                FROM mentor_divisi md
+                JOIN divisi d ON md.id_divisi = d.id_divisi
+                WHERE md.id_user = ?
+            ");
+            $stmtDivisi->execute([$user['id_user']]);
+            $divisiNama = $stmtDivisi->fetchAll(PDO::FETCH_COLUMN);
+
+            // Simpan array nama divisi ke dalam session
+            $_SESSION['divisi_mentor'] = $divisiNama;
+        }
+
         return $user['role'];
     }
 
     return false;
 }
 
+
+/**
+ * Mengecek apakah user sudah login
+ * Jika belum, redirect ke halaman login
+ */
 function cekLogin()
 {
     if (!isset($_SESSION['id_user'])) {
@@ -26,24 +53,33 @@ function cekLogin()
     }
 }
 
+/**
+ * Fungsi untuk registrasi user baru
+ * @return true jika sukses, string pesan error jika gagal
+ */
 function register($name, $email, $password, $confirmPassword)
 {
     global $pdo;
-    //mengecek apakah email yang di regist sudah terdaftar apa belum
-    $stmt = $pdo->prepare("SELECT * FROM  users WHERE email = ?");
+
+    // Cek apakah email sudah terdaftar
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->execute([$email]);
-    // email suddah terdaftar maka user baru harus pakai email
     if ($stmt->rowCount() > 0) {
         return "Email sudah terdaftar!";
     }
 
+    // Cek konfirmasi password
     if ($password !== $confirmPassword) {
         return "Password dan konfirmasi tidak cocok!";
     }
+
     $idUser = generateUserId();
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $pdo->prepare("INSERT INTO users (id_user,nama, email, password, role) VALUES (?,?,?,?,?)");
+
+    // Simpan data user baru
+    $stmt = $pdo->prepare("INSERT INTO users (id_user, nama, email, password, role) VALUES (?, ?, ?, ?, ?)");
     $success = $stmt->execute([$idUser, $name, $email, $hashedPassword, 'anggota']);
+
     if ($success) {
         return true;
     } else {
@@ -51,9 +87,11 @@ function register($name, $email, $password, $confirmPassword)
     }
 }
 
+/**
+ * Fungsi untuk generate ID user secara otomatis
+ * Format: USR-001, USR-002, dst
+ */
 function generateUserId()
-# fungsi yang membuat tag id
-#contoh id 8 -> USR-008
 {
     global $pdo;
     $stmt = $pdo->query("SELECT id_user FROM users ORDER BY id_user DESC LIMIT 1");
@@ -65,5 +103,6 @@ function generateUserId()
     } else {
         $newNumber = 1;
     }
+
     return 'USR-' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
 }

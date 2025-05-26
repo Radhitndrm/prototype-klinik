@@ -19,13 +19,11 @@ try {
     $stmt = $pdo->prepare("DELETE FROM mentor_divisi WHERE id_user = ?");
     $stmt->execute([$id_user]);
 
-    // Update role user menjadi anggota
-    $stmt = $pdo->prepare("UPDATE users SET role = 'anggota' WHERE id_user = ?");
-    $stmt->execute([$id_user]);
+    // Tidak perlu update role di sini, karena sudah ditangani oleh trigger
 
     $pdo->commit();
 
-    echo "Mentor berhasil dihapus dan diubah menjadi anggota.";
+    echo "Mentor berhasil dihapus. Role akan otomatis diubah menjadi anggota jika tidak lagi menjadi mentor di divisi lain.";
 } catch (Exception $e) {
     $pdo->rollBack();
     echo "Gagal menghapus mentor: " . $e->getMessage();

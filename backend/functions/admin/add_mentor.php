@@ -13,10 +13,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $id_user = $_POST['id_user'] ?? null;
-$divisi_ids = $_POST['divisi_ids'] ?? [];
+$divisi_id = $_POST['divisi_id'] ?? null;  // pastikan keynya divisi_id (bukan divisi_ids)
 
-if (!$id_user || empty($divisi_ids)) {
+if (!$id_user || !$divisi_id) {
     die("Data tidak lengkap.");
+}
+
+// Cek kalau divisi_id itu array, tolak
+if (is_array($divisi_id)) {
+    die("Divisi harus berupa satu nilai, bukan array.");
 }
 
 try {
@@ -26,17 +31,14 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET role = 'mentor' WHERE id_user = ?");
     $stmt->execute([$id_user]);
 
-    // // Hapus dulu relasi mentor_divisi lama kalau ada
-    // $delete = $pdo->prepare("DELETE FROM mentor_divisi WHERE id_user = ?");
-    // $delete->execute([$id_user]);
+    // Hapus dulu relasi mentor_divisi lama kalau ada
+    $delete = $pdo->prepare("DELETE FROM mentor_divisi WHERE id_user = ?");
+    $delete->execute([$id_user]);
 
-    // Insert relasi baru untuk tiap divisi yang dipilih
+    // Insert relasi baru hanya 1 divisi
     $insert = $pdo->prepare("INSERT INTO mentor_divisi (id_mentor_divisi, id_user, id_divisi) VALUES (?, ?, ?)");
-
-    foreach ($divisi_ids as $divisi_id) {
-        $idMentorDivisi = generateMentorDivisiId($pdo);
-        $insert->execute([$idMentorDivisi, $id_user, $divisi_id]);
-    }
+    $idMentorDivisi = generateMentorDivisiId($pdo);
+    $insert->execute([$idMentorDivisi, $id_user, $divisi_id]);
 
     $pdo->commit();
 
